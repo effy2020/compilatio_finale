@@ -4,3 +4,10 @@ Il s'agit d'une branche de travail offrant un exécutable qui analyse lexicaleme
 et syntaxiquement le code JS entré et accèpte un code correct dans le fragment
 implémenté.
 
+
+### Compilation et exécution
+
+Pour compiler et exécuter le programme, utilisez la commande suivante :
+
+```sh
+make run
