@@ -1,5 +1,5 @@
 
-Vous vous trouvez sur la branche ``ast'' du projet de compilation.
+Vous vous trouvez sur la branche ``code_gen'' du projet de compilation.
 ********************************************************************************
 Il s'agit d'une branche de Rendu de code generateur de notre parseur 
 
