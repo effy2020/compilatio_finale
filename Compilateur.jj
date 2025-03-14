@@ -18,11 +18,18 @@ SKIP :
 { " " | "\t" }
 TOKEN :
 { < NUMBER: ["1"-"9"] (["0"-"9"])* >
-| < EOL: "\n" >
+| < PV : ";" >
 }
 void mainNT () :
 {}
-{ expression() <EOL> }
+{ command() }
+
+
+void command():
+{}
+{
+    expression() <PV>
+}
 void expression () :
 {}
 { terme() (
