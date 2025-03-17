@@ -11,7 +11,7 @@ public class Compilateur {
 public static void main(String args[]) {
 try {
 Compilateur parseur = new Compilateur(System.in);
-int i =parseur.mainNT();
+float i =parseur.mainNT();
 System.out.println(i);
 System.out.println("C'est bien une expression arithmetique");
 } catch (TokenMgrError e) {
@@ -28,20 +28,20 @@ TOKEN :
 { < NUMBER: (["1"-"9"] (["0"-"9"])* | "0") ("."(["0"-"9"])*)?>
 | < PV : ";" >
 }
-int mainNT () :
-{int e;}
+float mainNT () :
+{float e;}
 { e=command() {return e;} }
 
 
-int command():
-{int e;}
+float command():
+{float e;}
 {
     e=expression() <PV> {return e;}
 }
 
-int expression () :
-{int e;
-int res;}
+float expression () :
+{float e;
+float res;}
 { e=terme()  {res=e;}
 ( "+" e=terme() {res=res+e;}
 | "-" e=terme() {res=res-e;}
@@ -49,9 +49,9 @@ int res;}
 }
 
 
-int terme () :
-{int e;
-int res;}
+float terme () :
+{float e;
+float res;}
 { e=facteur()  {res=e;}
 ("*" e=facteur() {res=res*e;}
 | "/" e=facteur() {res=res/e;}
@@ -59,10 +59,10 @@ int res;}
 
 }
 
-int facteur () :
-{int e;
+float facteur () :
+{float e;
 Token t;}
 { "(" e=expression() ")" {return e;}
 | "-" e=facteur() {return (-e);}
-| t=<NUMBER> {return Integer.parseInt(t.image);}
+| t=<NUMBER> {return Float.parseFloat(t.image);}
 }
