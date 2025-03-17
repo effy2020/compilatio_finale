@@ -1,11 +1,27 @@
 PARSER_BEGIN(Compilateur)
 import java.io.InputStream;
 import AST.*;
+import java.io.FileWriter;
+import java.io.IOException;
 public class Compilateur {
 public static void main(String args[]) {
+
 try {
 Compilateur parseur = new Compilateur(System.in);
 ExpressionA i=parseur.mainNT();
+String nameFile;
+try{
+    if (args.length==0){nameFile="sortie.jsm";}
+    else{nameFile=args[0] +".jsm";}
+    FileWriter f=new FileWriter(nameFile,false);
+    f.write(i.toAssembly());
+    f.close();
+    System.out.println("fichier créé avec succés");
+}catch(IOException e){
+    e.printStackTrace();
+}
+
+System.out.println(i.toAssembly());
 System.out.println("C'est bien une expression arithmetique");
 } catch (TokenMgrError e) {
 System.out.println("Ceci n'est pas une expression arithmetique");
@@ -14,6 +30,7 @@ System.out.println("Ceci n'est pas une expression arithmetique");
 }
 }
 }
+
 PARSER_END(Compilateur)
 SKIP :
 { " " | "\t" }
@@ -34,7 +51,7 @@ ExpressionA command():
 ExpressionA expression () :
 {ExpressionA e;
 ExpressionA res=null;}
-{ e=terme() ( {res=e;}
+{ e=terme() {res=e;}( 
 "+" e=terme() {res=new Plus(res,e);}
 | "-" (e=terme()) {res=new Moins(res,e);}
 )* {return res;}
