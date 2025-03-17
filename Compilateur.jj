@@ -1,3 +1,10 @@
+options {
+    DEBUG_TOKEN_MANAGER = false;
+	DEBUG_PARSER=false;
+	DEBUG_LOOKAHEAD=false;
+}
+
+
 PARSER_BEGIN(Compilateur)
 import java.io.InputStream;
 import AST.*;
@@ -5,7 +12,8 @@ public class Compilateur {
 public static void main(String args[]) {
 try {
 Compilateur parseur = new Compilateur(System.in);
-ExpressionA i=parseur.mainNT();
+CommandA i=parseur.mainNT();
+System.out.println(i.eval());
 System.out.println("C'est bien une expression arithmetique");
 } catch (TokenMgrError e) {
 System.out.println("Ceci n'est pas une expression arithmetique");
@@ -18,33 +26,40 @@ PARSER_END(Compilateur)
 SKIP :
 { " " | "\t" }
 TOKEN :
-{ < NUMBER: ["1"-"9"] (["0"-"9"])* >
+{ < NUMBER: (["1"-"9"] (["0"-"9"])* | "0") ("."(["0"-"9"])*)?>
 | < PV : ";" >
 }
-ExpressionA mainNT () :
-{ExpressionA e;}
+
+CommandA mainNT () :
+{Expr_Pt_Virg e;}
 { e=command() {return e;} }
 
 
-ExpressionA command():
+Expr_Pt_Virg command():
 {ExpressionA e;}
 {
-    e=expression() <PV> {return e;}
+    e=expression() <PV> {return new Expr_Pt_Virg(e);}
 }
+
+
+
 ExpressionA expression () :
 {ExpressionA e;
-ExpressionA res=null;}
-{ e=terme() ( {res=e;}
+ExpressionA res;}
+{ e=terme() {res=e;}( 
 "+" e=terme() {res=new Plus(res,e);}
 | "-" (e=terme()) {res=new Moins(res,e);}
 )* {return res;}
 }
+
 ExpressionA terme () :
 {ExpressionA res;
 ExpressionA e;}
 { e=facteur() {res=e;}(
 "*" e=facteur() {res=new Mult(res,e);}
+|"/" e=facteur() {res=new Div(res,e);}
 )* {return res;}
+
 }
 ExpressionA facteur () :
 {ExpressionA e;
