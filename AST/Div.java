@@ -17,6 +17,9 @@ package AST;
             }
             return gauche.eval()/droite.eval();
         }
+        public String toAssembly(){
+            return gauche.toAssembly() + droite.toAssembly()+"DiviNb \n";
+        }
 
 }
  
