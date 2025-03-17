@@ -1,10 +1,18 @@
+options {
+    DEBUG_TOKEN_MANAGER = false;
+	DEBUG_PARSER=false;
+	DEBUG_LOOKAHEAD=false ;
+}
+
+
 PARSER_BEGIN(Compilateur)
 import java.io.InputStream;
 public class Compilateur {
 public static void main(String args[]) {
 try {
 Compilateur parseur = new Compilateur(System.in);
-parseur.mainNT();
+int i =parseur.mainNT();
+System.out.println(i);
 System.out.println("C'est bien une expression arithmetique");
 } catch (TokenMgrError e) {
 System.out.println("Ceci n'est pas une expression arithmetique");
@@ -20,32 +28,41 @@ TOKEN :
 { < NUMBER: ["1"-"9"] (["0"-"9"])* >
 | < PV : ";" >
 }
-void mainNT () :
-{}
-{ command() }
+int mainNT () :
+{int e;}
+{ e=command() {return e;} }
 
 
-void command():
-{}
+int command():
+{int e;}
 {
-    expression() <PV>
+    e=expression() <PV> {return e;}
 }
-void expression () :
-{}
-{ terme() (
-"+" terme()
-| "-" terme()
-)*
+
+int expression () :
+{int e;
+int res;}
+{ e=terme()  {res=e;}
+( "+" e=terme() {res=res+e;}
+| "-" e=terme() {res=res-e;}
+)* {return res;}
 }
-void terme () :
-{}
-{ facteur() (
-"*" facteur()
-)*
+
+ 
+
+int terme () :
+{int e;
+int res;}
+{ e=facteur()  {res=e;}
+("*" e=facteur() {res=res*e;}
+)* {return res;}
 }
-void facteur () :
-{}
-{ "(" expression() ")"
-| "-" facteur()
-| <NUMBER>
+
+
+int facteur () :
+{int e;
+Token t;}
+{ "(" e=expression() ")" {return e;}
+| "-" e=facteur() {return (-e);}
+| t=<NUMBER> {return Integer.parseInt(t.image);}
 }
