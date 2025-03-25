@@ -1,8 +1,20 @@
 PARSER_BEGIN(Compilateur)
 import java.io.InputStream;
+import java.io.StringReader;  
+
 public class Compilateur {
+private String input;
+
+
+public Compilateur(String input) {
+this.input = input;
+ReInit(new java.io.StringReader(input));
+}
+
+
 public static void main(String args[]) {
 try {
+String input="2+3==2;";
 Compilateur parseur = new Compilateur(System.in);
 parseur.mainNT();
 System.out.println("C'est bien une expression arithmetique");
@@ -19,6 +31,14 @@ SKIP :
 TOKEN :
 { < NUMBER: (["1"-"9"] (["0"-"9"])* | "0") ("."(["0"-"9"])*)?>
 | < PV : ";" >
+| <BOOLEAN : ("True" | "False")>  
+| <Equals: "==">
+| <NotEql: "!=">
+| <LoEqlNb : "<=" >
+| <GrEqlNb : ">=" >
+| <LoStlNb : "<" >
+| <GrStlNb : ">" >
+| <Not : "!" >
 }
 void mainNT () :
 {}
@@ -28,8 +48,16 @@ void mainNT () :
 void command():
 {}
 {
-    expression() <PV>
+    comparaison() <PV>
 }
+
+void comparaison():
+{}
+{
+expression() (<Equals> expression() | <NotEql> expression()| <LoEqlNb> expression() | <GrEqlNb> expression() | <LoStlNb> expression() | <GrStlNb> expression())* 
+}
+
+
 void expression () :
 {}
 { terme() (
@@ -48,5 +76,7 @@ void facteur () :
 {}
 { "(" expression() ")"
 | "-" facteur()
+| <Not> facteur()
 | <NUMBER>
+|<BOOLEAN>
 }
