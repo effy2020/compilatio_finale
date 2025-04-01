@@ -66,5 +66,18 @@ public class CompilateurTest {
         String input = "True ! true;";
         assertThrows(ParseException.class, () -> new Compilateur(input).mainNT());
     }
+
+    @Test
+	public void testDbExp() {
+        String input = "2<=3==4;";
+        assertDoesNotThrow(() -> new Compilateur(input).mainNT());
+    }
+
+    @Test
+	public void testDbExp2() {
+        String input = "2<=3>=4;";
+        assertDoesNotThrow(() -> new Compilateur(input).mainNT());
+    }
+ 
 	
 }
