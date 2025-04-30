@@ -107,7 +107,7 @@ ExpressionA e;}
 ExpressionA facteur () :
 {ExpressionA e;
 Token t;}
-{ "(" e=expression() ")" {return e;}
+{ "(" e=comparaison() ")" {return e;}
 | "-" e=facteur() {return new Neg(e);}
 | <Not> e=facteur() {return new Not(e);}
 | t=<NUMBER>  {return new Num(Double.parseDouble(t.image));}
