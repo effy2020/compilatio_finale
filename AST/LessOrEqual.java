@@ -6,7 +6,20 @@ public class LessOrEqual extends ExpressionA_Binaire{
     
     public String symbole() {return "LoEqlNb";};
       public String toAssembly(){
-            return gauche.toAssembly()+ droite.toAssembly() +"LoEqNb\n";
+           String resultat = "";
+    resultat += gauche.toAssembly();
+    if (gauche instanceof Bool) {
+        resultat += "BoToNb\n";
+    }
+
+    resultat += droite.toAssembly();
+    if (droite instanceof Bool) {
+        resultat += "BoToNb\n";
+    }
+    resultat += "LoEqNb\n";
+
+    return resultat;
+        
         }  
 }
  

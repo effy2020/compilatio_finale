@@ -9,8 +9,21 @@ public String symbole() {return "fois";};
 
  
         public String toAssembly(){
-            return gauche.toAssembly()+droite.toAssembly()+"MultNb\n";
-        }
+                        String resultat = "";
+    resultat += gauche.toAssembly();
+    if (gauche instanceof Bool) {
+        resultat += "BoToNb\n";
+    }
+
+    resultat += droite.toAssembly();
+    if (droite instanceof Bool) {
+        resultat += "BoToNb\n";
+    }
+    resultat += "MultNb\n";
+
+    return resultat;
+}
+          
         }
 
 

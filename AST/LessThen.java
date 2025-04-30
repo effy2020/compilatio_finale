@@ -6,7 +6,20 @@ public class LessThen extends ExpressionA_Binaire{
     
     public String symbole() {return "LoStlNb";};
       public String toAssembly(){
-            return gauche.toAssembly()+ droite.toAssembly() +"LoStNb\n";
+              String resultat = "";
+    resultat += gauche.toAssembly();
+    if (gauche instanceof Bool) {
+        resultat += "BoToNb\n";
+    }
+
+    resultat += droite.toAssembly();
+    if (droite instanceof Bool) {
+        resultat += "BoToNb\n";
+    }
+    resultat += "LoStNb\n";
+
+    return resultat;
+             
         }   
 }
  

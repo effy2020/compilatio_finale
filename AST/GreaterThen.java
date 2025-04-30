@@ -5,7 +5,21 @@ public class GreaterThen extends ExpressionA_Binaire{
     
     public String symbole() {return "GrStlNb";};
     public String toAssembly(){
-            return gauche.toAssembly()+ droite.toAssembly() +"GrStNb\n";
-        } 
+        //faire le cast vers eniter 
+    String resultat = "";
+    resultat += gauche.toAssembly();
+    if (gauche instanceof Bool) {
+        resultat += "BoToNb\n";
+    }
+
+    resultat += droite.toAssembly();
+    if (droite instanceof Bool) {
+        resultat += "BoToNb\n";
+    }
+    resultat += "GrStNb\n";
+
+    return resultat;
+             
+}
 }
  

@@ -15,9 +15,16 @@ public String toString() {
  
 
         public String toAssembly(){
-          return arg.toAssembly()+"NegaNb\n" ;
+          String resultat="";
+          resultat+=arg.toAssembly();
+          if(arg instanceof Bool){
+            resultat+="BoToNb\n";
+          }
+          resultat+="NegaNb\n" ;
+          return resultat;
       }
       
 
 }	
 
+  
