@@ -71,7 +71,7 @@ ExpressionA comparaison():
 {ExpressionA e;
 ExpressionA res;}
 {
-
+ 
 e = expression() { res = e; } (
     <Equals>   e = expression() { res = new Equals(res, e); }
   | <NotEql>   e = expression() { res = new NotEquals(res, e); }
@@ -79,8 +79,7 @@ e = expression() { res = e; } (
   | <GrEqlNb>  e = expression() { res = new GreaterOrEqual(res, e); }
   | <LoStlNb>  e = expression() { res = new LessThen(res, e); }
   | <GrStlNb>  e = expression() { res = new GreaterThen(res, e); }
-)* { return res; }
-
+)* { return res; } 
 }
 
 
