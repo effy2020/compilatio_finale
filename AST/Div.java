@@ -10,16 +10,9 @@ package AST;
            return "div";
         }
 
-        @Override
-        public Double eval(){
-            if(droite.eval()==0){
-                throw new ArithmeticException("Division par zero");
-            }
-            return gauche.eval()/droite.eval();
-        }
+  
         public String toAssembly(){
             return gauche.toAssembly() + droite.toAssembly()+"DiviNb \n";
         }
 
-}
  
