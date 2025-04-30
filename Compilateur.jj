@@ -76,8 +76,8 @@ e = expression() { res = e; } (
   | <NotEql>   e = expression() { res = new NotEquals(res, e); }
   | <LoEqlNb>  e = expression() { res = new LessOrEqual(res, e); }
   | <GrEqlNb>  e = expression() { res = new GreaterOrEqual(res, e); }
-  | <LoStlNb>  e = expression() { res = new LessThan(res, e); }
-  | <GrStlNb>  e = expression() { res = new GreaterThan(res, e); }
+  | <LoStlNb>  e = expression() { res = new LessThen(res, e); }
+  | <GrStlNb>  e = expression() { res = new GreaterThen(res, e); }
 )* { return res; }
 
 }
@@ -108,7 +108,7 @@ ExpressionA e;}
 ExpressionA facteur () :
 {ExpressionA e;
 Token t;}
-{ "(" e=expression() ")" {return e;}
+{ "(" e=comparaison() ")" {return e;}
 | "-" e=facteur() {return new Neg(e);}
 | <Not> e=facteur() {return new Not(e);}
 | t=<NUMBER>  {return new Num(Double.parseDouble(t.image));}
