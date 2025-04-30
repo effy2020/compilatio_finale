@@ -97,7 +97,6 @@ e = expression() { res = e; } (
   | <LoStlNb>  e = expression() { res = new LessThen(res, e); }
   | <GrStlNb>  e = expression() { res = new GreaterThen(res, e); }
 )* { return res; }
-
 }
 
 
