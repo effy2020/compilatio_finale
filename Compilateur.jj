@@ -71,14 +71,14 @@ ExpressionA comparaison():
 {ExpressionA e;
 ExpressionA res;}
 {
-e=expression()   {res=e;}(
-  <Equals> e=expression() {res=new Eql(res,e);}
-| <NotEql> e=expression() {res=new NotEq(res,e);}
-| <LoEqlNb> e=expression() {res=new LoEqlNb(res,e);}
-| <GrEqlNb> e=expression() {res=new GrEqlNb(res,e);}
-| <LoStlNb> e=expression() {res=new LoStlNb(res,e);}
-| <GrStlNb> e=expression() {res=new GrStlNb(res,e);}
-)* {return res;}
+e = expression() { res = e; } (
+    <Equals>   e = expression() { res = new Equals(res, e); }
+  | <NotEql>   e = expression() { res = new NotEquals(res, e); }
+  | <LoEqlNb>  e = expression() { res = new LessOrEqual(res, e); }
+  | <GrEqlNb>  e = expression() { res = new GreaterOrEqual(res, e); }
+  | <LoStlNb>  e = expression() { res = new LessThen(res, e); }
+  | <GrStlNb>  e = expression() { res = new GreaterThen(res, e); }
+)* { return res; }
 }
 
 
