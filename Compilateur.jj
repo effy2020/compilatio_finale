@@ -30,7 +30,7 @@ try {
 String input="2+3==2;";
 Compilateur parseur = new Compilateur(System.in);
 CommandA i=parseur.mainNT();
- 
+System.out.println(i);
 String nameFile;
 try{
     if (args.length==0){nameFile="sortie.jsm";}

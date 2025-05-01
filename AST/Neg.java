@@ -17,7 +17,11 @@ public String toString() {
         public String toAssembly(){
           String resultat="";
           resultat+=arg.toAssembly();
-          if(arg instanceof Bool){
+          if(arg instanceof Equals || arg instanceof NotEquals ||
+        arg instanceof LessThen || arg instanceof GreaterThen ||
+        arg instanceof LessOrEqual || arg instanceof GreaterOrEqual ||
+        arg instanceof Not || arg instanceof Bool) {
+      
             resultat+="BoToNb\n";
           }
           resultat+="NegaNb\n" ;

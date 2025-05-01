@@ -10,7 +10,7 @@ public Expr_Pt_Virg(ExpressionA exp) {
 
 public String toString() {
  
-  return String.format("neg(%1$s)", exp.toString() + ";");
+  return String.format("exp(%1$s)", exp.toString() + ";");
 }
 
  

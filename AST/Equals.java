@@ -6,8 +6,16 @@ public class Equals extends ExpressionA_Binaire{
     public String symbole() {return "Eq";}; 
 
      public String toAssembly(){
-         return gauche.toAssembly()+ droite.toAssembly() +"Equals\n";
-        
+    
+           String resultat = "";
+    resultat += gauche.toAssembly();
+  
+
+    resultat += droite.toAssembly();
+    
+    resultat += "Equals\n";
+
+    return resultat;
 }
 }
  
