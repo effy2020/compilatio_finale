@@ -35,11 +35,15 @@ System.out.println("Ceci n'est pas une expression arithmetique");
 }
 }
 }
+
+
 PARSER_END(Compilateur)
 SKIP :
 { " " | "\t" }
 TOKEN :
-{ < NUMBER: (["1"-"9"] (["0"-"9"])* | "0") ("."(["0"-"9"])*)?>
+{ < NUMBER: ((["1"-"9"] (["0"-"9"])* | "0") ("."(["0"-"9"])*)?)
+    | (((["0"-"9"])+ ("." (["0"-"9"])+)? | "." (["0"-"9"])+) ("e") (["-"])? (["0"-"9"])+)
+    |  ("NaN") >
 | < PV : ";" >
 | <BOOLEAN : ("True" | "False")>  
 | <Equals: "==">
@@ -51,9 +55,11 @@ TOKEN :
 | <Not : "!" >
 }
 
+ 
 CommandA mainNT () :
 {Expr_Pt_Virg e;}
 { e=command() {return e;} }
+ 
 
 
 
@@ -101,6 +107,7 @@ ExpressionA e;}
 )* {return res;}
  
 }
+ 
 
 
 ExpressionA facteur () :
@@ -115,4 +122,5 @@ Token t;}
 
 
 
+ 
  
