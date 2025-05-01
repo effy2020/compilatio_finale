@@ -1,3 +1,4 @@
+ 
 package AST;
 
 // non disponible hors du package (non publique).
@@ -11,7 +12,7 @@ abstract class ExpressionA_Binaire extends ExpressionA {
     this.droite = droite;
   }
 
-  abstract Double eval();
+  
   abstract String symbole(); 
   public abstract String toAssembly();
 
@@ -19,3 +20,4 @@ abstract class ExpressionA_Binaire extends ExpressionA {
     return String.format("%1$s(%2$s,%3$s)", symbole(), gauche.toString(), droite.toString());
   }
 }
+ 

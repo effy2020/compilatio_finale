@@ -1,3 +1,4 @@
+ 
 package AST;
 
 public class Num extends ExpressionA {
@@ -10,12 +11,10 @@ public class Num extends ExpressionA {
   public String toString() {
     return Double.toString(num);
   }
-  @Override
-  public Double eval(){
-      return num;
-  }
+ 
   public String toAssembly(){
     return "CsteNb "+num +"\n";
 }
 
 }
+ 

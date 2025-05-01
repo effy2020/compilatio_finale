@@ -1,3 +1,4 @@
+ 
 package AST;
 
 public class Neg extends ExpressionA {
@@ -11,15 +12,23 @@ public Neg(ExpressionA arg) {
 public String toString() {
   return String.format("neg(%1$s)", arg.toString());
 }
-@Override
-        public Double eval(){
-            return -arg.eval();
-        }
-
+ 
 
         public String toAssembly(){
-          return arg.toAssembly()+"NegaNb\n" ;
+          String resultat="";
+          resultat+=arg.toAssembly();
+          if(arg instanceof Equals || arg instanceof NotEquals ||
+        arg instanceof LessThen || arg instanceof GreaterThen ||
+        arg instanceof LessOrEqual || arg instanceof GreaterOrEqual ||
+        arg instanceof Not || arg instanceof Bool) {
+      
+            resultat+="BoToNb\n";
+          }
+          resultat+="NegaNb\n" ;
+          return resultat;
       }
       
 
 }	
+
+  

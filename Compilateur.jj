@@ -1,20 +1,36 @@
 options {
     DEBUG_TOKEN_MANAGER = false;
-	DEBUG_PARSER=false;
+	DEBUG_PARSER= false;
 	DEBUG_LOOKAHEAD=false;
 }
 
 PARSER_BEGIN(Compilateur)
 import java.io.InputStream;
 import AST.*;
+ 
 import java.io.FileWriter;
 import java.io.IOException;
+ 
+
+import java.io.StringReader;  
+ 
 
 public class Compilateur {
+private String input;
+
+
+public Compilateur(String input) {
+this.input = input;
+ReInit(new java.io.StringReader(input));
+}
+
+
 public static void main(String args[]) {
 try {
+String input="2+3==2;";
 Compilateur parseur = new Compilateur(System.in);
 CommandA i=parseur.mainNT();
+System.out.println(i);
 String nameFile;
 try{
     if (args.length==0){nameFile="sortie.jsm";}
@@ -27,6 +43,7 @@ try{
     e.printStackTrace();
 }
 System.out.println(i.toAssembly());
+ 
 System.out.println("C'est bien une expression arithmetique");
 } catch (TokenMgrError e) {
 System.out.println("Ceci n'est pas une expression arithmetique");
@@ -42,6 +59,14 @@ SKIP :
 TOKEN :
 { < NUMBER: (["1"-"9"] (["0"-"9"])* | "0") ("."(["0"-"9"])*)?>
 | < PV : ";" >
+| <BOOLEAN : ("True" | "False")>  
+| <Equals: "==">
+| <NotEql: "!=">
+| <LoEqlNb : "<=" >
+| <GrEqlNb : ">=" >
+| <LoStlNb : "<" >
+| <GrStlNb : ">" >
+| <Not : "!" >
 }
 
 CommandA mainNT () :
@@ -49,11 +74,31 @@ CommandA mainNT () :
 { e=command() {return e;} }
 
 
+
 Expr_Pt_Virg command():
 {ExpressionA e;}
 {
-    e=expression() <PV> {return new Expr_Pt_Virg(e);}
+    e=comparaison() <PV> {return new Expr_Pt_Virg(e); }
 }
+
+
+
+
+
+ExpressionA comparaison():
+{ExpressionA e;
+ExpressionA res;}
+{
+e = expression() { res = e; } (
+    <Equals>   e = expression() { res = new Equals(res, e); }
+  | <NotEql>   e = expression() { res = new NotEquals(res, e); }
+  | <LoEqlNb>  e = expression() { res = new LessOrEqual(res, e); }
+  | <GrEqlNb>  e = expression() { res = new GreaterOrEqual(res, e); }
+  | <LoStlNb>  e = expression() { res = new LessThen(res, e); }
+  | <GrStlNb>  e = expression() { res = new GreaterThen(res, e); }
+)* { return res; }
+}
+
 
 
 
@@ -62,7 +107,7 @@ ExpressionA expression () :
 ExpressionA res;}
 { e=terme() {res=e;}( 
 "+" e=terme() {res=new Plus(res,e);}
-| "-" (e=terme()) {res=new Moins(res,e);}
+| "-" e=terme() {res=new Moins(res,e);}
 )* {return res;}
 }
 
@@ -73,12 +118,20 @@ ExpressionA e;}
 "*" e=facteur() {res=new Mult(res,e);}
 |"/" e=facteur() {res=new Div(res,e);}
 )* {return res;}
-
+ 
 }
+
+
 ExpressionA facteur () :
 {ExpressionA e;
 Token t;}
-{ "(" e=expression() ")" {return e;}
+{ "(" e=comparaison() ")" {return e;}
 | "-" e=facteur() {return new Neg(e);}
+| <Not> e=facteur() {return new Not(e);}
 | t=<NUMBER>  {return new Num(Double.parseDouble(t.image));}
+| t=<BOOLEAN>  {return new Bool(Boolean.parseBoolean(t.image));}
 }
+
+
+
+ 

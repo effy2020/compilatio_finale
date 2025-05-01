@@ -10,16 +10,28 @@ package AST;
            return "div";
         }
 
-        @Override
-        public Double eval(){
-            if(droite.eval()==0){
-                throw new ArithmeticException("Division par zero");
-            }
-            return gauche.eval()/droite.eval();
-        }
-        public String toAssembly(){
-            return gauche.toAssembly() + droite.toAssembly()+"DiviNb \n";
-        }
+  
+public String toAssembly(){
+    String resultat = "";
+    resultat += gauche.toAssembly();
+    if (gauche instanceof Bool || gauche instanceof Equals || gauche instanceof NotEquals ||
+        gauche instanceof LessThen || gauche instanceof GreaterThen ||
+        gauche instanceof LessOrEqual || gauche instanceof GreaterOrEqual ||
+        gauche instanceof Not ) {
+        resultat += "BoToNb\n";
+    }
 
-}
+    resultat += droite.toAssembly();
+    if (droite instanceof Bool || droite instanceof Equals ||droite instanceof NotEquals ||
+    droite instanceof LessThen ||droite instanceof GreaterThen ||
+    droite instanceof LessOrEqual ||droite instanceof GreaterOrEqual ||
+    droite instanceof Not  ) {
+        resultat += "BoToNb\n";
+    }
+    resultat += "DiviNb \n";
+ 
+    return resultat;
+    }
+    }
+
  
