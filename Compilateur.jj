@@ -1,6 +1,7 @@
 PARSER_BEGIN(Compilateur)
 import java.io.InputStream;
 import java.io.StringReader;  
+import java.util.Scanner;
 
 public class Compilateur {
 private String input;
@@ -14,8 +15,10 @@ ReInit(new java.io.StringReader(input));
 
 public static void main(String args[]) {
 try {
-String input="2+3==2;";
-Compilateur parseur = new Compilateur(System.in);
+Scanner scanner=new Scanner(System.in);
+String input=scanner.nextLine();
+scanner.close();
+Compilateur parseur = new Compilateur(input);
 parseur.mainNT();
 System.out.println("C'est bien une expression arithmetique");
 } catch (TokenMgrError e) {
@@ -28,8 +31,9 @@ System.out.println("Ceci n'est pas une expression arithmetique");
 
 
 PARSER_END(Compilateur)
+ 
 SKIP :
-{ " " | "\t" }
+{ " " | "\t" | "\r"}
 TOKEN :
 { < NUMBER: ((["1"-"9"] (["0"-"9"])* | "0") ("."(["0"-"9"])*)?)
     | (((["0"-"9"])+ ("." (["0"-"9"])+)? | "." (["0"-"9"])+) ("e") (["-"])? (["0"-"9"])+)
@@ -47,13 +51,14 @@ TOKEN :
 
 void mainNT () :
 {}
-{ command() }
+{ (command())* }
 
+ 
 
 void command():
 {}
 {
-    comparaison() <PV>
+    comparaison() <PV>  
 }
 
 void comparaison():
