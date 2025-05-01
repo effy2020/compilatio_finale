@@ -156,5 +156,19 @@ public void testNestedArithmeticComparisonLogic() {
     assertDoesNotThrow(() -> new Compilateur(input).mainNT());
 }
 
+@Test
+public void testSceintificNumber() {
+    String input = "(3e2 + 2) * (4 - 1) <= 15 >= (5e6 * 3 == 15);"; // True == True
+    assertDoesNotThrow(() -> new Compilateur(input).mainNT());
+}
+
+@Test
+public void testNanNumber() {
+    String input = "(NaN+2);"; // True == True
+    assertDoesNotThrow(() -> new Compilateur(input).mainNT());
+}
+
+
+
 
 }
