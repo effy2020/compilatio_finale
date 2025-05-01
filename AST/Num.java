@@ -13,6 +13,7 @@ public class Num extends ExpressionA {
   }
  
   public String toAssembly(){
+
     return "CsteNb "+num +"\n";
 }
 
