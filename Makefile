@@ -1,14 +1,20 @@
-JAVAC = javac
-JAVA = java
-TARGET = Main
+# Règle par défaut : compile puis exécute
+# Générer et compiler les fichiers Java
+compile:
+	javacc Compilateur.jj
+	javac Compilateur.java
+	javac -cp .:lib/junit-jupiter-api-5.10.0.jar:lib/junit-platform-console-standalone-1.10.0.jar Compilateur.java TEST/CompilateurTest.java
+# Exécuter le parser
+run:
+	java Compilateur
 
-all: $(TARGET).class
+# Exécuter les tests avec JUnit
+test: compile
+	java -cp .:lib/junit-jupiter-api-5.10.0.jar:lib/junit-platform-console-standalone-1.10.0.jar:TEST org.junit.platform.console.ConsoleLauncher execute --scan-classpath
 
-$(TARGET).class: $(TARGET).java
-	$(JAVAC) $(TARGET).java
-
+# Nettoyer les fichiers générés
 clean:
-	rm -f *.class
+	rm -f *.class *.java TEST/*.class
 
-run: all
-	$(JAVA) $(TARGET)
+
+ 
