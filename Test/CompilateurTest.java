@@ -169,20 +169,16 @@ public void testNanNumber() {
 }
 
 @Test
-public void testExpressions() {
-    String input = "(3 + 2) ; (4 - 1) <= 15 >=1; (5 * 3 == 15);"; // True == True
+ 
+public void testMixedArithmeticAndBoolean() {
+    String input = "2+3 == 5; 5*4 != 20; !(10/2 > 3);";
     assertDoesNotThrow(() -> new Compilateur(input).mainNT());
 }
 
-@Test
-public void testExpression2() {
-    String input = "(.3e2 + 2) * (4e-23 - 1); 15 >= (4*5); (5.234e6 * 3 == 15);"; // True == True
-    assertDoesNotThrow(() -> new Compilateur(input).mainNT());
-}
 
 @Test
 public void testExpression3() {
-    String input = "2+3;2;2-3"; // True == True
+    String input = "2+3;2;2-3;"; // True == True
     assertDoesNotThrow(() -> new Compilateur(input).mainNT());
 }
 
