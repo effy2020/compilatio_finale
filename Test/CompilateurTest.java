@@ -1,3 +1,4 @@
+
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -169,7 +170,6 @@ public void testNanNumber() {
 }
 
 @Test
- 
 public void testMixedArithmeticAndBoolean() {
     String input = "2+3 == 5; 5*4 != 20; !(10/2 > 3);";
     assertDoesNotThrow(() -> new Compilateur(input).mainNT());
