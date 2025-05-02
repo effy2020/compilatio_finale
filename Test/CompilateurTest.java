@@ -168,7 +168,15 @@ public void testNanNumber() {
     assertDoesNotThrow(() -> new Compilateur(input).mainNT());
 }
 
+@Test
+public void testExpressions() {
+    String input = "(3 + 2) ; (4 - 1) <= 15 >=1; (5 * 3 == 15);"; // True == True
+    assertDoesNotThrow(() -> new Compilateur(input).mainNT());
+}
 
-
-
+@Test
+public void testExpression2() {
+    String input = "(.3e2 + 2) * (4e-23 - 1); 15 >= (4*5);(5.234e6 * 3 == 15);"; // True == True
+    assertDoesNotThrow(() -> new Compilateur(input).mainNT());
+}
 }
