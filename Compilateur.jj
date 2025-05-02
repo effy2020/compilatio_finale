@@ -51,7 +51,7 @@ TOKEN :
 
 void mainNT () :
 {}
-{ (command())* }
+{ (command())+ }
 
  
 
