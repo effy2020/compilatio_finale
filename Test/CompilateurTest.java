@@ -168,7 +168,23 @@ public void testNanNumber() {
     assertDoesNotThrow(() -> new Compilateur(input).mainNT());
 }
 
+@Test
+public void testMultipleExpressionsSingleLine() {
+    String input = "2+3; 5*4; 10/2;";
+    assertDoesNotThrow(() -> new Compilateur(input).mainNT());
+}
 
+@Test
+public void testMixedArithmeticAndBoolean() {
+    String input = "2+3 == 5; 5*4 != 20; !(10/2 > 3);";
+    assertDoesNotThrow(() -> new Compilateur(input).mainNT());
+}
+
+@Test
+public void testComplexNestedExpressions() {
+    String input = "((2+3)*4 <= 20) == (5*4 >= 15); !(1+1 == 3); (5/0.5 == 10);";
+    assertDoesNotThrow(() -> new Compilateur(input).mainNT());
+}
 
 
 }
