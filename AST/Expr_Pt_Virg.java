@@ -12,11 +12,19 @@ public String toString() {
  
   return String.format("exp(%1$s)", exp.toString() + ";");
 }
+//genere drop a la fin de chaque instruction (une seule)
+  // Version avec paramètre booléen
+  public String toAssembly(boolean isLastCommand) {
+    String asm = exp.toAssembly() + "Drop\n";
+    if (isLastCommand) {
+        asm += "Halt\n";
+    }
+    return asm;
+}
 
- 
-
-public String toAssembly(){
-    return exp.toAssembly();
+// Version sans paramètre (optionnelle)
+public String toAssembly() {
+    return toAssembly(false); // Par défaut sans Halt
 }
 }
  
