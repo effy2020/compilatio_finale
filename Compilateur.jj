@@ -8,7 +8,8 @@ options {
 PARSER_BEGIN(Compilateur)
 import java.io.InputStream;
 import AST.*;
-
+import java.util.List;
+import java.util.ArrayList;
 import java.io.StringReader;  
 import java.util.Scanner;
 
@@ -29,7 +30,7 @@ Scanner scanner=new Scanner(System.in);
 String input=scanner.nextLine();
 scanner.close();
 Compilateur parseur = new Compilateur(input);
-CommandA i=parseur.mainNT();
+List<Expr_Pt_Virg> i=parseur.mainNT();
 System.out.println(i);
  
 System.out.println("C'est bien une expression arithmetique");
@@ -62,13 +63,16 @@ TOKEN :
 }
 
  
-CommandA mainNT () :
-{Expr_Pt_Virg e;}
  
-{ (e=command())+ {return e;} }
- 
- 
-
+List<Expr_Pt_Virg> mainNT() :
+{
+    List<Expr_Pt_Virg> commands = new ArrayList<>();
+    Expr_Pt_Virg e;
+}
+{
+    (e=command() { commands.add(e); })+  
+    { return commands; }             
+}
  
 
 
