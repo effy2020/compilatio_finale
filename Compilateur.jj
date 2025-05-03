@@ -53,7 +53,7 @@ TOKEN :
 
 void mainNT () :
 {}
-{ (command())+ }
+{  (importCommand())* (command())+ }
 
 
 void importCommand():
@@ -63,7 +63,7 @@ void importCommand():
 void command():
 {}
 {
-    (importCommand())* comparaison() <PV>
+     comparaison() <PV>
 }
 
 
