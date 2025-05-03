@@ -63,7 +63,7 @@ TOKEN :
 | <Not : "!" >
 |< IDENTIFIER: (["a"-"z", "A"-"Z", "_"])(["a"-"z", "A"-"Z", "0"-"9", "_"])* >
 }
-
+ 
  
  
 List<Expr_Pt_Virg> mainNT() :
@@ -72,7 +72,7 @@ List<Expr_Pt_Virg> mainNT() :
     Expr_Pt_Virg e;
 }
 {
-    (e=importCommand(){commands.add(e); })+
+    (e=importCommand(){commands.add(e); })*
     (e=command() { commands.add(e); })+  
     { return commands; }             
 }
@@ -91,7 +91,7 @@ Expr_Pt_Virg importCommand():
 
 Expr_Pt_Virg command():
 {ExpressionA e;
-Expr_Pt_Virg imp=null;}
+}
 {
        e=comparaison() <PV> { return new Expr_Pt_Virg(e); }
     
