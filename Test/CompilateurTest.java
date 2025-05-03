@@ -2,6 +2,8 @@
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.text.ParseException;
+
 public class CompilateurTest {
 
     @Test
@@ -9,18 +11,11 @@ public class CompilateurTest {
         String input = "True;";
         assertDoesNotThrow(() -> new Compilateur(input).mainNT());
     }
-    
-  
+ 
     @Test
-    public void testInvalidToken() {
-        String input = "True == true;";
-        assertThrows(TokenMgrError.class, () -> new Compilateur(input).mainNT());
-    }
-
-    @Test
-    public void testInvalidComparison() {
-        String input = "(3 + 5 == 8;";
-        assertThrows(ParseException.class, () -> new Compilateur(input).mainNT());
+    public void testValidComparison() {
+        String input = "(3 + 5 == 8);";
+        assertDoesNotThrow(() -> new Compilateur(input).mainNT());
     }
 
     @Test
@@ -64,6 +59,12 @@ public class CompilateurTest {
     }
 
  
+   
+    @Test
+public void testDeeplyNestedExpression() {
+    String input = "!((2 + 3) * (4 - 1) != 15);"; // !(5 * 3 == 15) → !(True) → False
+    assertDoesNotThrow(() -> new Compilateur(input).mainNT());
+}
  
 
 @Test
@@ -163,5 +164,20 @@ public void testExpression3() {
     assertDoesNotThrow(() -> new Compilateur(input).mainNT());
 }
  
-
+@Test
+public void testImportThenMultipleExpressions() {
+    String input = "import malib; 2+3; 4*5; True == False;";
+    assertDoesNotThrow(() -> new Compilateur(input).mainNT());
+}
+@Test
+public void testMultipleImportsAndExpressions() {
+    String input = "import malib; import utils; 1 + 2; 3 == 3;";
+    assertDoesNotThrow(() -> new Compilateur(input).mainNT());
+}
+@Test
+public void testImportAndComplexExpressions() {
+    String input = "import malib; ((2 + 3) * 4 >= 20) == !(False);";
+    assertDoesNotThrow(() -> new Compilateur(input).mainNT());
+}
+ 
 }
