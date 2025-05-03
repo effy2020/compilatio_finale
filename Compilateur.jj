@@ -40,6 +40,7 @@ TOKEN :
     |  ("NaN") >
 | < PV : ";" >
 | <BOOLEAN : ("True" | "False")>  
+| <IMPORT: "import" >
 | <Equals: "==">
 | <NotEql: "!=">
 | <LoEqlNb : "<=" >
@@ -47,19 +48,25 @@ TOKEN :
 | <LoStlNb : "<" >
 | <GrStlNb : ">" >
 | <Not : "!" >
+|< IDENTIFIER: (["a"-"z", "A"-"Z", "_"])(["a"-"z", "A"-"Z", "0"-"9", "_"])* >
 }
 
 void mainNT () :
 {}
 { (command())+ }
 
- 
+
+void importCommand():
+{}
+{  <IMPORT> <IDENTIFIER>  <PV> } 
 
 void command():
 {}
 {
-    comparaison() <PV>  
+    (importCommand())* comparaison() <PV>
 }
+
+
 
 void comparaison():
 {}
@@ -88,5 +95,5 @@ void facteur () :
 | "-" facteur()
 | <Not> facteur()
 | <NUMBER>
-|<BOOLEAN>             
+|<BOOLEAN>  
 }
