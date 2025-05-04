@@ -77,6 +77,7 @@ TOKEN :
     |  ("NaN") >
 | < PV : ";" >
 | <BOOLEAN : ("True" | "False")>  
+| <IMPORT: "import" >
 | <Equals: "==">
 | <NotEql: "!=">
 | <LoEqlNb : "<=" >
@@ -84,8 +85,10 @@ TOKEN :
 | <LoStlNb : "<" >
 | <GrStlNb : ">" >
 | <Not : "!" >
+|< IDENTIFIER: (["a"-"z", "A"-"Z", "_"])(["a"-"z", "A"-"Z", "0"-"9", "_"])* >
 }
-
+ 
+ 
  
 List<Expr_Pt_Virg> mainNT() :
 {
@@ -93,22 +96,34 @@ List<Expr_Pt_Virg> mainNT() :
     Expr_Pt_Virg e;
 }
 {
+    (e=importCommand(){commands.add(e); })*
     (e=command() { commands.add(e); })+  
     { return commands; }             
 }
  
+ 
+
+
+Expr_Pt_Virg importCommand():
+{Token t;}
+{  <IMPORT> t=<IDENTIFIER>    <PV> 
+{
+    return new Expr_Pt_Virg("import "+ t.image);
+} } 
+ 
 
 
 Expr_Pt_Virg command():
-{ExpressionA e;}
-{
-    e=comparaison() <PV> {return new Expr_Pt_Virg(e); }
- 
+{ExpressionA e;
 }
+{
+       e=comparaison() <PV> { return new Expr_Pt_Virg(e); }
+    
+}
+ 
 
 
-
-
+ 
 
 ExpressionA comparaison():
 {ExpressionA e;
@@ -146,6 +161,7 @@ ExpressionA e;}
  
 }
  
+ 
 
 
 ExpressionA facteur () :
@@ -160,5 +176,6 @@ Token t;}
 
 
 
+ 
  
  
