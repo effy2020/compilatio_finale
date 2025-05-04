@@ -1,5 +1,10 @@
 package AST;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 public class Expr_Pt_Virg extends CommandA{
 
     public ExpressionA exp;
@@ -20,9 +25,26 @@ return importCmd != null ? importCmd + ";" : String.format("exp(%1$s)", exp.toSt
 //genere drop a la fin de chaque instruction (une seule)
   // Version avec paramètre booléen
   public String toAssembly(boolean isLastCommand) {
-    String asm;
+    String asm,nomfichier;
     if(this.importCmd!=null){
-      asm="import malib\n";
+      nomfichier=this.importCmd.replace("import ","").trim()+".jsm"; //pour recuperer le nom du fichier 
+      try {
+            Path filePath = Paths.get(nomfichier); //recuperer le lien relatif du fichier 
+            String contenuFichier = new String(Files.readAllBytes(filePath));
+            contenuFichier=contenuFichier.trim();
+            //supprimer le Halt s'il est a la fin de notre fichier
+            if (contenuFichier.endsWith("Halt")) {
+              contenuFichier = contenuFichier.substring(0, contenuFichier.length() - 4).trim();
+          }
+          //enlever le commentaire si on a une erreur
+            // asm = "\n Contenu importé depuis " +nomfichier + ":\n" +
+            // contenuFichier + "\n" +
+            //       "Fin de l'import\n";
+            asm=contenuFichier+"\n";
+        } catch (IOException e) {
+            asm = "Erreur lors de la lecture du fichier " + nomfichier+ "\n";
+        }
+  
     }
     else{
       asm = exp.toAssembly() + "Drop\n";

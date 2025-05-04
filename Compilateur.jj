@@ -35,7 +35,7 @@ public static void main(String args[]) {
         String nameFile;
         
         try {
-            nameFile = args.length == 0 ? "sortie.jsm" : args[0] + ".jsm";
+            nameFile = args.length == 0 ? "malib.jsm" : args[0] + ".jsm";
             FileWriter f = new FileWriter(nameFile, false);
             
             try {
@@ -88,22 +88,6 @@ TOKEN :
 |< IDENTIFIER: (["a"-"z", "A"-"Z", "_"])(["a"-"z", "A"-"Z", "0"-"9", "_"])* >
 }
  
- 
- 
-List<Expr_Pt_Virg> mainNT() :
-{
-    List<Expr_Pt_Virg> commands = new ArrayList<>();
-    Expr_Pt_Virg e;
-}
-{
-    (e=importCommand(){commands.add(e); })*
-    (e=command() { commands.add(e); })+  
-    { return commands; }             
-}
- 
- 
-
-
 Expr_Pt_Virg importCommand():
 {Token t;}
 {  <IMPORT> t=<IDENTIFIER>    <PV> 
@@ -111,14 +95,24 @@ Expr_Pt_Virg importCommand():
     return new Expr_Pt_Virg("import "+ t.image);
 } } 
  
-
+List<Expr_Pt_Virg> mainNT() :
+{
+    List<Expr_Pt_Virg> commands = new ArrayList<>();
+    Expr_Pt_Virg e;
+}
+{
+    (e=importCommand() {commands.add(e); })*
+    (e=command() { commands.add(e); })+  
+    { return commands; }             
+}
+ 
+ 
 
 Expr_Pt_Virg command():
 {ExpressionA e;
 }
 {
        e=comparaison() <PV> { return new Expr_Pt_Virg(e); }
-    
 }
  
 
