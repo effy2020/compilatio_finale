@@ -180,4 +180,30 @@ public void testImportAndComplexExpressions() {
     assertDoesNotThrow(() -> new Compilateur(input).mainNT());
 }
  
+ 
+//test commentaire
+@Test
+public void testCommentBetweenExpressions() {
+    String input = "1+2; // addition simple 3*4;";
+    assertDoesNotThrow(() -> new Compilateur(input).mainNT());
+}
+
+@Test
+public void testMultipleLineComments() {
+    String input = """
+         5 + 5;
+        // Première ligne
+        // Deuxième ligne
+        """;
+    assertDoesNotThrow(() -> new Compilateur(input).mainNT());
+}
+
+ 
+@Test
+public void testBlockCommentInsideExpression() {
+    String input = "2; /* commentaire */ 4+ 3;";
+    assertDoesNotThrow(() -> new Compilateur(input).mainNT());
+}
+
+ 
 }
