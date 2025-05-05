@@ -26,12 +26,10 @@ ReInit(new java.io.StringReader(input));
 
 
 public static void main(String args[]) {
- 
     try {
         Scanner scanner = new Scanner(System.in);
         StringBuilder inputBuilder = new StringBuilder();
         System.out.println("Noter ;; pour valider l'expression :");
-      
         while (scanner.hasNextLine()) {
             String line = scanner.nextLine();
             if (line.equals(";;")) {
@@ -40,15 +38,12 @@ public static void main(String args[]) {
             inputBuilder.append(line).append("\n");
         }
         scanner.close();
-        
         Compilateur parseur = new Compilateur(inputBuilder.toString());
         List<Expr_Pt_Virg> commands = parseur.mainNT();
         String nameFile;
-        
         try {
             nameFile = args.length == 0 ? "malib.jsm" : args[0] + ".jsm";
             FileWriter f = new FileWriter(nameFile, false);
-            
             try {
                 for (int i = 0; i < commands.size(); i++) {
                     boolean isLast = (i == commands.size() - 1);
@@ -57,14 +52,11 @@ public static void main(String args[]) {
             } finally {
                 f.close();
             }
-            
+            //afficher le code assembleur dans la ligne
             for (int i = 0; i < commands.size(); i++) {
                 boolean isLast = (i == commands.size() - 1);
                 System.out.print(commands.get(i).toAssembly(isLast));
             }
-            
-            System.out.println("C'est bien une expression arithmetique");
-            
         } catch (IOException e) {
             System.err.println("Erreur d'écriture fichier:");
             e.printStackTrace();
@@ -76,14 +68,12 @@ public static void main(String args[]) {
         System.out.println("Ceci n'est pas une expression arithmetique");
     }
 
- 
 }
 }
 
 
 
- 
-
+  
 PARSER_END(Compilateur)
 
  
@@ -137,18 +127,6 @@ Expr_Pt_Virg importCommand():
     return new Expr_Pt_Virg("import "+ t.image);
 } } 
  
-List<Expr_Pt_Virg> mainNT() :
-{
-    List<Expr_Pt_Virg> commands = new ArrayList<>();
-    Expr_Pt_Virg e;
-}
-{
-    (e=importCommand() {commands.add(e); })*
-    (e=command() { commands.add(e); })+  
-    { return commands; }             
-}
- 
- 
 
 Expr_Pt_Virg command():
 {ExpressionA e;
@@ -157,10 +135,6 @@ Expr_Pt_Virg command():
        e=comparaison() <PV> { return new Expr_Pt_Virg(e); }
 }
  
-
-
- 
-
 ExpressionA comparaison():
 {ExpressionA e;
 ExpressionA res;}

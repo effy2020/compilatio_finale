@@ -57,6 +57,7 @@ return importCmd != null ? importCmd + ";" : String.format("exp(%1$s)", exp.toSt
  
 }
 
+ 
 // Version sans paramètre (optionnelle)
 public String toAssembly() {
     return toAssembly(false); // Par défaut sans Halt
@@ -64,4 +65,5 @@ public String toAssembly() {
 }
  
 
+ 
  
