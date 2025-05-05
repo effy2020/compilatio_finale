@@ -26,13 +26,23 @@ ReInit(new java.io.StringReader(input));
 public static void main(String args[]) {
 try {
  
-Scanner scanner=new Scanner(System.in);
-String input=scanner.nextLine();
-scanner.close();
-Compilateur parseur = new Compilateur(input);
-List<Expr_Pt_Virg> i=parseur.mainNT();
-System.out.println(i);
  
+Scanner scanner = new Scanner(System.in);
+        StringBuilder inputBuilder = new StringBuilder();
+        System.out.println("Noter ;; pour valider l'expression :");
+        // Lit toutes les lignes jusqu'à ce qu'on entre ";;" pour terminer
+        while (scanner.hasNextLine()) {
+            String line = scanner.nextLine();
+            if (line.equals(";;")) {
+                break;
+            }
+            inputBuilder.append(line).append("\n");
+        }
+        scanner.close();
+        
+        Compilateur parseur = new Compilateur(inputBuilder.toString());
+        parseur.mainNT();
+
 System.out.println("C'est bien une expression arithmetique");
 } catch (TokenMgrError e) {
 System.out.println("Ceci n'est pas une expression arithmetique");
@@ -42,13 +52,31 @@ System.out.println("Ceci n'est pas une expression arithmetique");
 }
 }
 
+ 
+ 
+ 
+   
+
+ 
+
 
 PARSER_END(Compilateur)
+
  
-SKIP :
-{ " " | "\t" | "\r"}
+TOKEN : {
+  < LINE_COMMENT : "//" (~["\n","\r"])* ("\n" | "\r") >
+| < BLOCK_COMMENT : "/*" (~["*"] | "*" ~["/"])* "*/" >
+}
+
+SKIP : {
+    " " | "\t" | "\r" | "\n"
+  | <LINE_COMMENT>
+  | <BLOCK_COMMENT>
+}
+
+ 
 TOKEN :
-{ < NUMBER: ((["1"-"9"] (["0"-"9"])* | "0") ("."(["0"-"9"])*)?)
+{   < NUMBER: ((["1"-"9"] (["0"-"9"])* | "0") ("."(["0"-"9"])*)?)
     | (((["0"-"9"])+ ("." (["0"-"9"])+)? | "." (["0"-"9"])+) ("e") (["-"])? (["0"-"9"])+)
     |  ("NaN") >
 | < PV : ";" >
@@ -66,7 +94,9 @@ TOKEN :
  
  
  
+ 
 List<Expr_Pt_Virg> mainNT() :
+ 
 {
     List<Expr_Pt_Virg> commands = new ArrayList<>();
     Expr_Pt_Virg e;
