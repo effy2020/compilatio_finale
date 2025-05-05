@@ -26,11 +26,22 @@ ReInit(new java.io.StringReader(input));
 
 
 public static void main(String args[]) {
+ 
     try {
         Scanner scanner = new Scanner(System.in);
-        String input = scanner.nextLine();
+        StringBuilder inputBuilder = new StringBuilder();
+        System.out.println("Noter ;; pour valider l'expression :");
+      
+        while (scanner.hasNextLine()) {
+            String line = scanner.nextLine();
+            if (line.equals(";;")) {
+                break;
+            }
+            inputBuilder.append(line).append("\n");
+        }
         scanner.close();
-        Compilateur parseur = new Compilateur(input);
+        
+        Compilateur parseur = new Compilateur(inputBuilder.toString());
         List<Expr_Pt_Virg> commands = parseur.mainNT();
         String nameFile;
         
@@ -64,15 +75,32 @@ public static void main(String args[]) {
     } catch (ParseException e) {
         System.out.println("Ceci n'est pas une expression arithmetique");
     }
+
+ 
 }
 }
 
-PARSER_END(Compilateur)
+
+
  
-SKIP :
-{ " " | "\t" | "\r"}
+
+PARSER_END(Compilateur)
+
+ 
+TOKEN : {
+  < LINE_COMMENT : "//" (~["\n","\r"])* ("\n" | "\r") >
+| < BLOCK_COMMENT : "/*" (~["*"] | "*" ~["/"])* "*/" >
+}
+
+SKIP : {
+    " " | "\t" | "\r" | "\n"
+  | <LINE_COMMENT>
+  | <BLOCK_COMMENT>
+}
+
+ 
 TOKEN :
-{ < NUMBER: ((["1"-"9"] (["0"-"9"])* | "0") ("."(["0"-"9"])*)?)
+{   < NUMBER: ((["1"-"9"] (["0"-"9"])* | "0") ("."(["0"-"9"])*)?)
     | (((["0"-"9"])+ ("." (["0"-"9"])+)? | "." (["0"-"9"])+) ("e") (["-"])? (["0"-"9"])+)
     |  ("NaN") >
 | < PV : ";" >
@@ -88,6 +116,20 @@ TOKEN :
 |< IDENTIFIER: (["a"-"z", "A"-"Z", "_"])(["a"-"z", "A"-"Z", "0"-"9", "_"])* >
 }
  
+ 
+List<Expr_Pt_Virg> mainNT() :
+ 
+{
+    List<Expr_Pt_Virg> commands = new ArrayList<>();
+    Expr_Pt_Virg e;
+}
+{
+    (e=importCommand(){commands.add(e); })*
+    (e=command() { commands.add(e); })+  
+    { return commands; }             
+}
+ 
+  
 Expr_Pt_Virg importCommand():
 {Token t;}
 {  <IMPORT> t=<IDENTIFIER>    <PV> 
