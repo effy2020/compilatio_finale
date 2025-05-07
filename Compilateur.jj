@@ -76,6 +76,7 @@ TOKEN :
 | <LoStlNb : "<" >
 | <GrStlNb : ">" >
 | <Not : "!" >
+| <And: "&&">
 |< IDENTIFIER: (["a"-"z", "A"-"Z", "_"])(["a"-"z", "A"-"Z", "0"-"9", "_"])* >
 }
 
@@ -90,12 +91,19 @@ void importCommand():
 {}
 {  <IMPORT> <IDENTIFIER>  <PV> } 
 
+
+
 void command():
 {}
 {
-     comparaison() <PV>
+     AndExpression() <PV>
 }
 
+void AndExpression():
+{}
+{
+    comparaison()(<And> comparaison())*
+}
 
 
 void comparaison():
