@@ -14,7 +14,8 @@ public String toString() {
    public String toAssembly(){
     String resultat="";
     resultat+=arg.toAssembly();
-    if(arg instanceof Num || arg instanceof Neg){
+    if(arg instanceof Num || arg instanceof Neg || arg instanceof Plus || arg instanceof Moins
+    || arg instanceof Mult || arg instanceof Div){
       resultat+="NbToBe \n";
     }
     resultat+="Not\n";
