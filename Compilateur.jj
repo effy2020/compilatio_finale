@@ -159,7 +159,7 @@ e = expression() { res = e; } (
 
 
 ExpressionA expression() :
- 
+
 {ExpressionA e;
 ExpressionA res;}
 { e=terme() {res=e;}( 
