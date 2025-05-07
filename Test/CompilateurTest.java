@@ -216,4 +216,31 @@ public void testBlockCommentInsideExpression() {
     assertDoesNotThrow(() -> new Compilateur(input).mainNT());
 }
 
+
+// Nouveaux tests avec &&
+    @Test
+    public void testAndTrueFalseComparison() {
+        String input = "2 + 3 == 5 && 4 < 3;";
+        assertDoesNotThrow(() -> new Compilateur(input).mainNT());
+    }
+
+    @Test
+    public void testComplexLogicalAndArithmetic() {
+        String input = "!(1 + 1 == 2) && (3 * 3 >= 9);";
+        assertDoesNotThrow(() -> new Compilateur(input).mainNT());
+    }
+
+    @Test
+    public void testChainedAndConditions() {
+        String input = "True && 2 < 3 && 4 * 2 == 8;";
+        assertDoesNotThrow(() -> new Compilateur(input).mainNT());
+    }
+
+    @Test
+    public void testImportAndAndExpression() {
+        String input = "import malib; (1 + 2 == 3) && (5 > 2) && !(False);";
+        assertDoesNotThrow(() -> new Compilateur(input).mainNT());
+    }
 }
+
+
