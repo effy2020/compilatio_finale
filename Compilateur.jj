@@ -90,6 +90,7 @@ TOKEN :
 | <LoStlNb : "<" >
 | <GrStlNb : ">" >
 | <Not : "!" >
+| <And: "&&">
 |< IDENTIFIER: (["a"-"z", "A"-"Z", "_"])(["a"-"z", "A"-"Z", "0"-"9", "_"])* >
 }
  
@@ -124,13 +125,21 @@ Expr_Pt_Virg command():
 {ExpressionA e;
 }
 {
-       e=comparaison() <PV> { return new Expr_Pt_Virg(e); }
+       e=AndExpression() <PV> { return new Expr_Pt_Virg(e); }
     
 }
  
 
 
- 
+ExpressionA AndExpression():
+{ExpressionA e;
+ExpressionA res;}
+{
+    e=comparaison() {res=e;}(
+    <And> comparaison() {res=new AndExpression(res,e);})* {return res;}
+}
+
+
 
 ExpressionA comparaison():
 {ExpressionA e;
@@ -148,7 +157,9 @@ e = expression() { res = e; } (
 }
 
 
-ExpressionA expression () :
+
+ExpressionA expression() :
+ 
 {ExpressionA e;
 ExpressionA res;}
 { e=terme() {res=e;}( 
