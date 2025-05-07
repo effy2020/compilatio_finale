@@ -136,7 +136,7 @@ ExpressionA AndExpression():
 ExpressionA res;}
 {
     e=comparaison() {res=e;}(
-    <And> comparaison() {res=new AndExpression(res,e);})* {return res;}
+    <And> e=comparaison() {res=new AndExpression(res,e);})* {return res;}
 }
 
 
