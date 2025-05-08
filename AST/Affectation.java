@@ -1,13 +1,19 @@
 package AST;
 
-public class Affectation extends ExpressionA_Binaire{
+public class Affectation extends ExpressionA {
     public String identifient;
-    public Affectation(String identifient,ExpressionA droite) {
-        super(null, droite);
-        this.identifient=identifient;}
+    public ExpressionA droite;
 
-    public String symbole() {return "Affect";};
+    public Affectation(String identifient, ExpressionA droite) {
+        this.identifient = identifient;
+        this.droite = droite;
+    }
+
+    public String symbole() {
+        return "Affect";
+    }
+
     public String toString() {
-        return String.format("%1$s(%2$s,%3$s)", symbole(), identifient, droite.toString());
+        return String.format("%s(%s,%s)", symbole(), identifient, droite);
     }
 }
