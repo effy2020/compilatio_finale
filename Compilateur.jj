@@ -133,9 +133,33 @@ Expr_Pt_Virg command():
 {ExpressionA e;
 }
 {
-       e=AndExpression() <PV> { return new Expr_Pt_Virg(e); }
+       e= affectation() <PV> { return new Expr_Pt_Virg(e); }
 }
  
+
+
+
+
+ExpressionA affectation():
+{
+    ExpressionA e;
+    List<Token> idents = new ArrayList<>();
+    Token t;
+}
+{
+    (t = <IDENTIFIER> "=" { idents.add(t); })*
+    e = AndExpression()
+    {
+        if (idents.isEmpty()) {
+            return e;
+        } else {
+            for (int i = idents.size() - 1; i >= 0; i--) {
+                e = new Affectation(idents.get(i).image, e);
+            }
+            return e;
+        }
+    }
+}
 
 
 ExpressionA AndExpression():
@@ -189,7 +213,7 @@ ExpressionA e;}
 ExpressionA facteur () :
 {ExpressionA e;
 Token t;}
-{ "(" e=comparaison() ")" {return e;}
+{ "(" e=affectation() ")" {return e;}
 | "-" e=facteur() {return new Neg(e);}
 | <Not> e=facteur() {return new Not(e);}
 | t=<NUMBER>  {return new Num(Double.parseDouble(t.image));}
@@ -199,5 +223,12 @@ Token t;}
 
 
  
- 
+
+
+
+
+
+
+
+
  
