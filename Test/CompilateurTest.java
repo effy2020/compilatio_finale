@@ -241,6 +241,40 @@ public void testBlockCommentInsideExpression() {
         String input = "import malib; (1 + 2 == 3) && (5 > 2) && !(False);";
         assertDoesNotThrow(() -> new Compilateur(input).mainNT());
     }
+
+    //tester les affectations
+
+    
+    @Test
+    public void testAssignmentWithLogicalExpression() {
+        String input = "x = (True && False) > (5 + 3 > 7);";
+        assertDoesNotThrow(() -> new Compilateur(input).mainNT());
+    }
+
+    @Test
+    public void testAssignmentWithNestedLogicalAndArithmetic() {
+        String input = "x = (y = 2 + 3) * (z = 5 * 6) + (7 > 4);";
+        assertDoesNotThrow(() -> new Compilateur(input).mainNT());
+    }
+
+
+    @Test
+    public void testComplexAssignmentWithParentheses() {
+        String input = "x = ((y = 3 + 2) * 4) - (z = 5 + 5);";
+        assertDoesNotThrow(() -> new Compilateur(input).mainNT());
+    }
+
+    @Test
+    public void testAssignmentWithBooleanAndArithmetic() {
+        String input = "x = (True - False) && (5 * 2 == 10);";
+        assertDoesNotThrow(() -> new Compilateur(input).mainNT());
+    }
+
+    @Test
+    public void testAssignmentWithNegationAndExpression() {
+        String input = "import malib; x = !(5 > 3) && (z=y = 7 + 3);";
+        assertDoesNotThrow(() -> new Compilateur(input).mainNT());
+    }
 }
 
 
