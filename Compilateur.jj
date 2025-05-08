@@ -144,7 +144,7 @@ ExpressionA affectation():
     e = AndExpression()
     {
         if (idents.isEmpty()) {
-            return new AndExpression(e);
+            return e;
         } else {
             for (int i = idents.size() - 1; i >= 0; i--) {
                 e = new Affectation(idents.get(i).image, e);

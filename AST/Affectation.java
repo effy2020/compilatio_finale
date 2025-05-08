@@ -1,19 +1,14 @@
 package AST;
 
-public class Affectation extends ExpressionA {
-    public String identifient;
-    public ExpressionA droite;
+public class Affectation extends ExpressionA_Unaire {
 
-    public Affectation(String identifient, ExpressionA droite) {
-        this.identifient = identifient;
-        this.droite = droite;
+    public Affectation(String identifient, ExpressionA exp) {
+        super( identifient,exp);
     }
 
     public String symbole() {
         return "Affect";
     }
 
-    public String toString() {
-        return String.format("%s(%s,%s)", symbole(), identifient, droite);
-    }
+
 }
