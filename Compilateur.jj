@@ -135,7 +135,7 @@ void terme () :
 }
 void facteur () :
 {}
-{ "(" affectatio() ")"
+{ "(" affectation() ")"
 | "-" facteur()
 | <Not> facteur()
 | <NUMBER>
