@@ -3,6 +3,7 @@ package AST;
 public class AndExpression extends ExpressionA_Binaire{
     public static Integer labelJump=0;
     public AndExpression(ExpressionA gauche,ExpressionA droite) {super(gauche, droite);}
+
     
     public String symbole() {return "&&";};
 
@@ -26,6 +27,12 @@ public class AndExpression extends ExpressionA_Binaire{
         resultat+= "u"+etiquette+" : CsteBo False\n";
         resultat+="fin"+etiquette +" : ";
         return resultat;
+    }
+
+
+
+    public String toString() {
+            return String.format("%s(%s,%s)", symbole(), gauche, droite);
     }
 
 }
