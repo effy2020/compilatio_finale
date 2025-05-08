@@ -125,10 +125,21 @@ Expr_Pt_Virg command():
 {ExpressionA e;
 }
 {
-       e=AndExpression() <PV> { return new Expr_Pt_Virg(e); }
+       e= affectation() <PV> { return new Expr_Pt_Virg(e); }
     
 }
  
+
+
+ExpressionA  affectation():
+{ExpressionA e;
+ Token t=null;}
+{
+    (t=<IDENTIFIER> "=")* e=AndExpression()
+    {if(t!=null) return new Affectation(t.image,e);
+    else return new AndExpression(e);}
+}
+
 
 
 ExpressionA AndExpression():
@@ -184,7 +195,7 @@ ExpressionA e;}
 ExpressionA facteur () :
 {ExpressionA e;
 Token t;}
-{ "(" e=comparaison() ")" {return e;}
+{ "(" e=affectation() ")" {return e;}
 | "-" e=facteur() {return new Neg(e);}
 | <Not> e=facteur() {return new Not(e);}
 | t=<NUMBER>  {return new Num(Double.parseDouble(t.image));}
@@ -194,5 +205,12 @@ Token t;}
 
 
  
- 
+
+
+
+
+
+
+
+
  
