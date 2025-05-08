@@ -131,15 +131,28 @@ Expr_Pt_Virg command():
  
 
 
-ExpressionA  affectation():
-{ExpressionA e;
- Token t=null;}
-{
-    (t=<IDENTIFIER> "=")* e=AndExpression()
-    {if(t!=null) return new Affectation(t.image,e);
-    else return new AndExpression(e);}
-}
 
+
+ExpressionA affectation():
+{
+    ExpressionA e;
+    List<Token> idents = new ArrayList<>();
+    Token t;
+}
+{
+    (t = <IDENTIFIER> "=" { idents.add(t); })*
+    e = AndExpression()
+    {
+        if (idents.isEmpty()) {
+            return new AndExpression(e);
+        } else {
+            for (int i = idents.size() - 1; i >= 0; i--) {
+                e = new Affectation(idents.get(i).image, e);
+            }
+            return e;
+        }
+    }
+}
 
 
 ExpressionA AndExpression():
