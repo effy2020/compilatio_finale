@@ -91,12 +91,16 @@ void importCommand():
 {}
 {  <IMPORT> <IDENTIFIER>  <PV> } 
 
-
+void affectation():
+{}
+{
+    (<IDENTIFIER> "=")* AndExpression()
+}
 
 void command():
 {}
 {
-     AndExpression() <PV>
+     affectation() <PV>
 }
 
 void AndExpression():
@@ -129,7 +133,7 @@ void terme () :
 }
 void facteur () :
 {}
-{ "(" comparaison() ")"
+{ "(" AndExpression() ")"
 | "-" facteur()
 | <Not> facteur()
 | <NUMBER>
