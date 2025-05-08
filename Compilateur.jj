@@ -133,7 +133,7 @@ void terme () :
 }
 void facteur () :
 {}
-{ "(" AndExpression() ")"
+{ "(" affectation() ")"
 | "-" facteur()
 | <Not> facteur()
 | <NUMBER>
