@@ -80,8 +80,7 @@ TOKEN :
 void mainNT () :
 {}
 {
-    command() mainNT()
-    | <EOF> //condition d'arret
+    (command())*  <EOF> //condition d'arret
 }
 void optionalComments():
 {}
