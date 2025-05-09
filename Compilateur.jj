@@ -46,8 +46,8 @@ PARSER_END(Compilateur)
 
  
 TOKEN : {
-  < LINE_COMMENT : "//" (~["\n","\r"])* ("\n" | "\r") >
-| < BLOCK_COMMENT : "/*" (~["*"] | "*" ~["/"])* "*/" >
+  < LINE_COMMENT: "//" (~["\n","\r"])* ("\n" | "\r" | "\r\n")? >
+| < BLOCK_COMMENT: "/*" (~["*"] | ("*" ~["/"]))* "*/" >
 }
 
 SKIP : {
@@ -56,7 +56,6 @@ SKIP : {
   | <BLOCK_COMMENT>
 }
 
- 
 TOKEN :
 {
 < NUMBER: ((["1"-"9"] (["0"-"9"])* | "0") ("."(["0"-"9"])*)?)
@@ -82,19 +81,25 @@ void mainNT () :
 {}
 {
     command() mainNT()
-    | <PV> //le epsilon ne veut pas marcher dans mon cas
+    | <EOF> //condition d'arret
+}
+void optionalComments():
+{}
+{
+   <LINE_COMMENT> | <BLOCK_COMMENT>
 }
 
 void command():
 {}
 {
   affectation() <PV>
-| importCommand()
+| importCommand() <PV>
+|optionalComments() 
 }
 
 void importCommand():
 {}
-{  <IMPORT> <IDENTIFIER>  <PV> } 
+{  <IMPORT> <IDENTIFIER>    }
 
 
 
