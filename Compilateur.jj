@@ -99,17 +99,17 @@ List<Expr_Pt_Virg> mainNT() :
     Expr_Pt_Virg e;
 }
 {
-    ( e = command() { commands.add(e); } )* <EOF>
+    ( e = command() { if(e!=null) commands.add(e); } )* <EOF>
     { return commands; }
 }
 
  
 
-Expr_Pt_Virg importCommand():
+ExpressionA importCommand():
 {Token t;}
 {  <IMPORT> t=<IDENTIFIER>
 {
-    return new Expr_Pt_Virg("import "+ t.image);
+    return new Expression_Import(t.image);
 } } 
  
 
@@ -120,7 +120,7 @@ Expr_Pt_Virg command():
 }
 {
       ( e= affectation() <PV> {result=new Expr_Pt_Virg(e); }
-      |result=importCommand() <PV>
+      |e=importCommand() <PV> {result=new Expr_Pt_Virg(e);}
       |optionalComments() )
       {return result;}
     
