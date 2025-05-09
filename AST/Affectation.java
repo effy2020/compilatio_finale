@@ -10,10 +10,13 @@ public class Affectation extends ExpressionA_Unaire {
         return "Affect";
     }
     public String toAssembly(){
+        Integer i=0;
         String resultat="";
         resultat+=exp.toAssembly();
-        resultat+="SetVar "+identifient+"\n";
-        resultat+="GetVar "+identifient+"\n";
+
+        resultat += "SetVar " + identifient + "\n";
+        resultat += "GetVar " + identifient + "\n";
+
         return resultat;
     }
 
