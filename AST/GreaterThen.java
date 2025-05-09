@@ -13,6 +13,10 @@ public class GreaterThen extends ExpressionA_Binaire{
         gauche instanceof LessOrEqual || gauche instanceof GreaterOrEqual ||
         gauche instanceof Not || gauche instanceof Bool) {
         resultat += "BoToNb\n";
+    }else if(gauche instanceof Identifient) {
+        //ici on va rajouter la logique de type of
+        resultat+="TypeOf \nCase 1\nBoToNb\n";
+
     }
 
     resultat += droite.toAssembly();
@@ -21,11 +25,16 @@ public class GreaterThen extends ExpressionA_Binaire{
     droite instanceof LessOrEqual ||droite instanceof GreaterOrEqual ||
     droite instanceof Not || droite instanceof Bool) {
         resultat += "BoToNb\n";
+    }else if(droite instanceof Identifient) {
+        //ici on va rajouter la logique de type of
+        resultat+="TypeOf \nCase 1\nBoToNb\n";
+
     }
     resultat += "GrStNb\n";
 
     return resultat;
              
 }
+
 }
  

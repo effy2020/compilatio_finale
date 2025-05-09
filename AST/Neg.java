@@ -24,10 +24,15 @@ public String toString() {
       
             resultat+="BoToNb\n";
           }
+          else if(arg instanceof Identifient) {
+            //ici on va rajouter la logique de type of
+            resultat+="TypeOf \nCase 1\nBoToNb\n";
+
+          }
           resultat+="NegaNb\n" ;
           return resultat;
       }
-      
+
 
 }	
 

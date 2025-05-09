@@ -14,8 +14,12 @@ public String symbole() {return "fois";};
     if (gauche instanceof Bool || gauche instanceof Equals || gauche instanceof NotEquals ||
         gauche instanceof LessThen || gauche instanceof GreaterThen ||
         gauche instanceof LessOrEqual || gauche instanceof GreaterOrEqual ||
-        gauche instanceof Not ) {
+        gauche instanceof Not  ) {
         resultat += "BoToNb\n";
+    }else if(gauche instanceof Identifient) {
+        //ici on va rajouter la logique de type of
+        resultat+="TypeOf \nCase 1\nBoToNb\n";
+
     }
 
     resultat += droite.toAssembly();
@@ -24,13 +28,18 @@ public String symbole() {return "fois";};
     droite instanceof LessOrEqual ||droite instanceof GreaterOrEqual ||
     droite instanceof Not  ) {
         resultat += "BoToNb\n";
+    }else if(droite instanceof Identifient) {
+        //ici on va rajouter la logique de type of
+        resultat+="TypeOf \nCase 1\nBoToNb\n";
+
     }
     resultat += "MultNb\n";
 
     return resultat;
 }
-          
-        }
+
+
+}
 
 
 
