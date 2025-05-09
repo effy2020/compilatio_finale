@@ -275,6 +275,29 @@ public void testBlockCommentInsideExpression() {
         String input = "import malib; x = !(5 > 3) && (z=y = 7 + 3);";
         assertDoesNotThrow(() -> new Compilateur(input).mainNT());
     }
+
+    //tester les expressions de type y=(x+2)
+
+
+        @Test
+        public void testNestedAssignmentInExpression() {
+            String input = "a = (b + 3 + 4) * 2;";
+            assertDoesNotThrow(() -> new Compilateur(input).mainNT());
+        }
+
+        @Test
+        public void testAssignmentWithParenthesizedLogicalExpression() {
+            String input = "result = ((x + 5) > 2) && (y / 10) < 20;";
+            assertDoesNotThrow(() -> new Compilateur(input).mainNT());
+        }
+
+        @Test
+        public void testAssignmentWithMultipleOperators() {
+            String input = "z = (a >= 2 + 3) * (b && 4) + c;";
+            assertDoesNotThrow(() -> new Compilateur(input).mainNT());
+        }
+
+
 }
 
 
