@@ -11,6 +11,8 @@ public class Identifient extends ExpressionA {
         return iden;
     }
 
-
+    public String toAssembly(){
+        return "GetVar "+iden +"\n";
+    }
 
 }
