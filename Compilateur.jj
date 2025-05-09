@@ -40,11 +40,6 @@ System.out.println("Ceci n'est pas une expression arithmetique");
 }
 
  
- 
- 
-   
-
- 
 
 
 PARSER_END(Compilateur)
@@ -63,7 +58,8 @@ SKIP : {
 
  
 TOKEN :
-{   < NUMBER: ((["1"-"9"] (["0"-"9"])* | "0") ("."(["0"-"9"])*)?)
+{
+< NUMBER: ((["1"-"9"] (["0"-"9"])* | "0") ("."(["0"-"9"])*)?)
     | (((["0"-"9"])+ ("." (["0"-"9"])+)? | "." (["0"-"9"])+) ("e") (["-"])? (["0"-"9"])+)
     |  ("NaN") >
 | < PV : ";" >
@@ -84,18 +80,22 @@ TOKEN :
  
 void mainNT () :
 {}
-{  (importCommand())*  (command())+ }
+{
+    command() mainNT()
+    | <PV> //le epsilon ne veut pas marcher dans mon cas
+}
 
+void command():
+{}
+{
+  affectation() <PV>
+| importCommand()
+}
 
 void importCommand():
 {}
 {  <IMPORT> <IDENTIFIER>  <PV> } 
 
-void command():
-{}
-{
-   affectation() <PV>
-}
 
 
 void affectation():
