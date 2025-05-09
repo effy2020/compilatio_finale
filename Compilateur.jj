@@ -147,7 +147,7 @@ ExpressionA affectation():
     Token t;
 }
 {
-    (t = <IDENTIFIER> "=" { idents.add(t); })*
+    (LOOKAHEAD(2) t = <IDENTIFIER> "=" { idents.add(t); })*
     e = AndExpression()
     {
         if (idents.isEmpty()) {
@@ -218,6 +218,7 @@ Token t;}
 | <Not> e=facteur() {return new Not(e);}
 | t=<NUMBER>  {return new Num(Double.parseDouble(t.image));}
 | t=<BOOLEAN>  {return new Bool(Boolean.parseBoolean(t.image));}
+| t=<IDENTIFIER>  {return new Identifient(t.image);}
 }
 
 
@@ -231,4 +232,5 @@ Token t;}
 
 
 
- 
+
+
