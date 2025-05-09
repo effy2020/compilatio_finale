@@ -101,7 +101,7 @@ void command():
 void affectation():
 {}
 {
-    (<IDENTIFIER> "=")* AndExpression()
+    (LOOKAHEAD(2) <IDENTIFIER> "=")* AndExpression() //ici on a ajoute un lookhead sinon on va avoir une ambiguite
 }
 
 
@@ -139,5 +139,6 @@ void facteur () :
 | "-" facteur()
 | <Not> facteur()
 | <NUMBER>
-|<BOOLEAN>  
+|<BOOLEAN>
+|<IDENTIFIER>
 }
