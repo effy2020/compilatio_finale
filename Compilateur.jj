@@ -140,11 +140,11 @@ ExpressionA affectation():
     Token t;
 }
 {
-    (t = <IDENTIFIER> "=" { idents.add(t); })*
+    (LOOKAHEAD(2) t = <IDENTIFIER> "=" { idents.add(t); })*
     e = AndExpression()
     {
         if (idents.isEmpty()) {
-            return new AndExpression(e);
+            return e;
         } else {
             for (int i = idents.size() - 1; i >= 0; i--) {
                 e = new Affectation(idents.get(i).image, e);
@@ -213,6 +213,7 @@ Token t;}
 | <Not> e=facteur() {return new Not(e);}
 | t=<NUMBER>  {return new Num(Double.parseDouble(t.image));}
 | t=<BOOLEAN>  {return new Bool(Boolean.parseBoolean(t.image));}
+| t=<IDENTIFIER>  {return new Identifient(t.image);}
 }
 
 
@@ -226,4 +227,5 @@ Token t;}
 
 
 
- 
+
+
