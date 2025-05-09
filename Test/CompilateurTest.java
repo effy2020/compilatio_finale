@@ -286,6 +286,35 @@ public void testBlockCommentInsideExpression() {
             String input = "z = (a >= 2 + 3) * (b && 4) + c;";
             assertDoesNotThrow(() -> new Compilateur(input).mainNT());
         }
+        // retester les commentaires
+
+        @Test
+        public void testCommentaireAvantInstruction() {
+            String input = "// Commentaire avant\nx = 42;";
+            assertDoesNotThrow(() -> new Compilateur(input).mainNT());
+        }
+
+        @Test
+        public void testCommentaireApresInstruction() {
+            String input = "y = 10; // Commentaire après";
+            assertDoesNotThrow(() -> new Compilateur(input).mainNT());
+        }
+
+
+        @Test
+        public void testCommentairesComplexesCombines() {
+            String input = """
+            /* debut */
+            import malib;
+            // Header
+            x =  5;
+            /* Calcul */
+            y = (x + 2) * 3; // Fin
+            """;
+            assertDoesNotThrow(() -> new Compilateur(input).mainNT());
+        }
+
+
 
 
 }
