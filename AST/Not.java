@@ -20,5 +20,6 @@ public String toString() {
     }
     resultat+="Not\n";
     return resultat;
-      } 
+      }
+
 }	

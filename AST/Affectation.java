@@ -10,15 +10,22 @@ public class Affectation extends ExpressionA_Unaire {
         return "Affect";
     }
     public String toAssembly(){
-        Integer i=0;
+
         String resultat="";
         resultat+=exp.toAssembly();
 
         resultat += "SetVar " + identifient + "\n";
-        resultat += "GetVar " + identifient + "\n";
+        if(exp instanceof Plus || exp instanceof Moins || exp instanceof Mult || exp instanceof Div
+                || exp instanceof GreaterThen || exp instanceof GreaterOrEqual || exp instanceof LessThen
+        || exp instanceof LessOrEqual || exp instanceof NotEquals || exp instanceof Not
+        || exp instanceof Equals || exp instanceof Neg || exp instanceof AndExpression
+                || exp instanceof Affectation) {
+            resultat += "GetVar " + identifient + "\n";
+        }
+
+
 
         return resultat;
     }
-
 
 }

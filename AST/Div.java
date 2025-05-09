@@ -19,6 +19,10 @@ public String toAssembly(){
         gauche instanceof LessOrEqual || gauche instanceof GreaterOrEqual ||
         gauche instanceof Not ) {
         resultat += "BoToNb\n";
+    }else if(gauche instanceof Identifient) {
+        //ici on va rajouter la logique de type of
+        resultat+="TypeOf \nCase 1\nBoToNb\n";
+
     }
 
     resultat += droite.toAssembly();
@@ -27,11 +31,16 @@ public String toAssembly(){
     droite instanceof LessOrEqual ||droite instanceof GreaterOrEqual ||
     droite instanceof Not  ) {
         resultat += "BoToNb\n";
+    }else if(droite instanceof Identifient) {
+        //ici on va rajouter la logique de type of
+        resultat+="TypeOf \nCase 1\nBoToNb\n"; //si c'est pas un boolean il saute
+
     }
     resultat += "DiviNb \n";
  
     return resultat;
     }
+
     }
 
  

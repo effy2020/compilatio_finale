@@ -10,6 +10,7 @@ public class Identifient extends ExpressionA {
     public String toString() {
         return iden;
     }
+    public String symbol() {return "iden"; };
 
     public String toAssembly(){
         return "GetVar "+iden +"\n";

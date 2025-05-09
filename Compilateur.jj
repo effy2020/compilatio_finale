@@ -52,10 +52,12 @@ public static void main(String args[]) {
             } finally {
                 f.close();
             }
+            System.out.print(commands+"\n");
             //afficher le code assembleur dans la ligne
             for (int i = 0; i < commands.size(); i++) {
                 boolean isLast = (i == commands.size() - 1);
                 System.out.print(commands.get(i).toAssembly(isLast));
+
             }
         } catch (IOException e) {
             System.err.println("Erreur d'écriture fichier:");
@@ -78,8 +80,8 @@ PARSER_END(Compilateur)
 
  
 TOKEN : {
-  < LINE_COMMENT : "//" (~["\n","\r"])* ("\n" | "\r") >
-| < BLOCK_COMMENT : "/*" (~["*"] | "*" ~["/"])* "*/" >
+  < LINE_COMMENT: "//" (~["\n","\r"])* ("\n" | "\r" | "\r\n")? >
+| < BLOCK_COMMENT: "/*" (~["*"] | ("*" ~["/"]))* "*/" >
 }
 
 SKIP : {
@@ -88,9 +90,9 @@ SKIP : {
   | <BLOCK_COMMENT>
 }
 
- 
 TOKEN :
-{   < NUMBER: ((["1"-"9"] (["0"-"9"])* | "0") ("."(["0"-"9"])*)?)
+{
+< NUMBER: ((["1"-"9"] (["0"-"9"])* | "0") ("."(["0"-"9"])*)?)
     | (((["0"-"9"])+ ("." (["0"-"9"])+)? | "." (["0"-"9"])+) ("e") (["-"])? (["0"-"9"])+)
     |  ("NaN") >
 | < PV : ";" >
@@ -109,33 +111,44 @@ TOKEN :
  
  
 List<Expr_Pt_Virg> mainNT() :
- 
 {
     List<Expr_Pt_Virg> commands = new ArrayList<>();
     Expr_Pt_Virg e;
 }
 {
-    (e=importCommand(){commands.add(e); })*
-    (e=command() { commands.add(e); })+  
-    { return commands; }             
+    ( e = command() { if(e!=null) commands.add(e); } )* <EOF>
+    { return commands; }
 }
- 
+
   
-Expr_Pt_Virg importCommand():
+
+
+ExpressionA importCommand():
+
 {Token t;}
-{  <IMPORT> t=<IDENTIFIER>    <PV> 
+{  <IMPORT> t=<IDENTIFIER>
 {
-    return new Expr_Pt_Virg("import "+ t.image);
+    return new Expression_Import(t.image);
 } } 
  
 
 Expr_Pt_Virg command():
 {ExpressionA e;
+ Expr_Pt_Virg result=null;
 }
 {
-       e= affectation() <PV> { return new Expr_Pt_Virg(e); }
+      ( e= affectation() <PV> {result=new Expr_Pt_Virg(e); }
+      |e=importCommand() <PV> {result=new Expr_Pt_Virg(e);}
+      |optionalComments() )
+      {return result;}
 }
  
+
+void optionalComments():
+{}
+{
+   <LINE_COMMENT> | <BLOCK_COMMENT>
+}
 
 
 
@@ -224,9 +237,6 @@ Token t;}
 
 
  
-
-
-
 
 
 

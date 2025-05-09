@@ -17,5 +17,6 @@ public class Equals extends ExpressionA_Binaire{
 
     return resultat;
 }
+
 }
  
