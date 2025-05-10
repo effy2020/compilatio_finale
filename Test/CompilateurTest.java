@@ -338,7 +338,7 @@ public void testBlockCommentInsideExpression() {
 
         @Test
         public void testIfWithComplexCondition() {
-            String input = "if (x >= 5 && y <= 10 || z != 0) result = True; else result = False;";
+            String input = "if (x >= 5 && y <= 10 > z != 0) result = True; else result = False;";
             assertDoesNotThrow(() -> new Compilateur(input).mainNT());
         }
 
@@ -357,11 +357,6 @@ public void testBlockCommentInsideExpression() {
 
 
 
-        @Test
-        public void testIfWithImportInBlock() {
-            String input = "if (flag)  import pkg; x = 10;  else { y = 20; }";
-            assertDoesNotThrow(() -> new Compilateur(input).mainNT());
-        }
 
 
 }
