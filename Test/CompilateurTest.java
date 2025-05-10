@@ -330,11 +330,10 @@ public void testBlockCommentInsideExpression() {
 
 
         @Test
-        public void testIfElse() {
-            String input = "if (x > 10) y = 20; else y = 30;";
+        public void testNestedIfElse() {
+            String input = "if (a == b) { if (c > d) x = 1; else x = 2; } else { x = 3; }";
             assertDoesNotThrow(() -> new Compilateur(input).mainNT());
         }
-
 
         @Test
         public void testIfWithComplexCondition() {
@@ -348,12 +347,22 @@ public void testBlockCommentInsideExpression() {
             assertDoesNotThrow(() -> new Compilateur(input).mainNT());
         }
 
+
+
         @Test
-        public void testIfWithNegation() {
-            String input = "if (!(x < y)) z = x; else z = y;";
+        public void testMultipleCommandsInIfBlock() {
+            String input = "if (condition) { x = 5; y = 10; z = x + y; } else { z = 0; }";
             assertDoesNotThrow(() -> new Compilateur(input).mainNT());
         }
 
+
+
+      
+        @Test
+        public void testIfWithImportInBlock() {
+            String input = "if (flag) { import pkg; x = 10; } else { y = 20; }";
+            assertDoesNotThrow(() -> new Compilateur(input).mainNT());
+        }
 
 
 
