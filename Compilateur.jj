@@ -96,7 +96,7 @@ void command():
   affectation() <PV>
 | importCommand() <PV>
 | optionalComments()
-| <IF> "(" expression() ")" command() <ELSE> command()
+| <IF> "(" affectation() ")" command() <ELSE> command()
 
 }
 
