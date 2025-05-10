@@ -97,7 +97,7 @@ void command():
 | importCommand() <PV>
 | optionalComments()
 | "{" mainNT() "}" //pour avoir plusiers condition sur une meme ligne
-| <IF> "(" affectation() ")" command() (<ELSE> command())?
+| <IF> "(" affectation() ")" command() (LOOKAHEAD(2) <ELSE> command())?
 
 }
 
