@@ -72,6 +72,8 @@ TOKEN :
 | <GrStlNb : ">" >
 | <Not : "!" >
 | <And: "&&">
+| <IF:"if">
+| <ELSE:"else">
 |< IDENTIFIER: (["a"-"z", "A"-"Z", "_"])(["a"-"z", "A"-"Z", "0"-"9", "_"])* >
 }
 
@@ -93,7 +95,9 @@ void command():
 {
   affectation() <PV>
 | importCommand() <PV>
-|optionalComments() 
+| optionalComments()
+| <IF> "(" expression() ")" command() <ELSE> command()
+
 }
 
 void importCommand():
