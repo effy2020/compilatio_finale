@@ -87,6 +87,8 @@ TOKEN :
 | <GrStlNb : ">" >
 | <Not : "!" >
 | <And: "&&">
+| <IF:"if">
+| <ELSE:"else">
 |< IDENTIFIER: (["a"-"z", "A"-"Z", "_"])(["a"-"z", "A"-"Z", "0"-"9", "_"])* >
 }
  
@@ -99,7 +101,7 @@ List<Expr_Pt_Virg> mainNT() :
     Expr_Pt_Virg e;
 }
 {
-    ( e = command() { if(e!=null) commands.add(e); } )* <EOF>
+    (( e = command() { if(e!=null) commands.add(e); } )*  <EOF>)
     { return commands; }
 }
 
@@ -110,29 +112,61 @@ ExpressionA importCommand():
 {  <IMPORT> t=<IDENTIFIER>
 {
     return new Expression_Import(t.image);
-} } 
+} }
+
  
 
 
 Expr_Pt_Virg command():
-{ExpressionA e;
- Expr_Pt_Virg result=null;
+{ExpressionA e,cond;
+ Expr_Pt_Virg c,result=null;
+
 }
 {
       ( e= affectation() <PV> {result=new Expr_Pt_Virg(e); }
       |e=importCommand() <PV> {result=new Expr_Pt_Virg(e);}
-      |optionalComments() )
+      |optionalComments()  //on ignore les tokens
+      | result=ifStatement() {return result;})
       {return result;}
-    
 }
  
+
+
+
+
+Expr_Pt_Virg ifStatement():
+{
+    ExpressionA cond;
+    List<Expr_Pt_Virg> thenCommands = new ArrayList<>();
+    List<Expr_Pt_Virg> elseCommands = new ArrayList<>();
+    Expr_Pt_Virg cmd;
+}
+{
+    <IF> "(" cond=affectation() ")"
+    ( "{" (cmd=command() {thenCommands.add(cmd);})* "}"
+    | cmd=command() {thenCommands.add(cmd);} )
+    (LOOKAHEAD(2) <ELSE>
+        ( "{" (cmd=command() {elseCommands.add(cmd);})* "}"
+        | cmd=command() {elseCommands.add(cmd);}
+        )
+    )?
+    {
+        return new Expr_Pt_Virg(new Condition(
+            cond,
+            thenCommands,
+            elseCommands
+        ));
+    }
+}
+
+
+
 
 void optionalComments():
 {}
 {
    <LINE_COMMENT> | <BLOCK_COMMENT>
 }
-
 
 
 
