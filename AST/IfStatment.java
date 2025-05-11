@@ -2,14 +2,14 @@ package AST;
 
 import java.util.List;
 
-public class Condition extends ExpressionA {
+public class IfStatment extends ExpressionA {
     private ExpressionA condition;
     private List<Expr_Pt_Virg> thenBranch;
     private List<Expr_Pt_Virg> elseBranch;
     public static Integer labelJump=0;
 
 
-    public Condition(ExpressionA condition, List<Expr_Pt_Virg> thenBranch, List<Expr_Pt_Virg> elseBranch) {
+    public IfStatment(ExpressionA condition, List<Expr_Pt_Virg> thenBranch, List<Expr_Pt_Virg> elseBranch) {
         this.condition = condition;
         this.thenBranch = thenBranch;
         this.elseBranch = elseBranch;

@@ -112,6 +112,8 @@ TOKEN :
 | <And: "&&">
 | <IF:"if">
 | <ELSE:"else">
+| <DO:"do">
+| <WHILE:"while">
 |< IDENTIFIER: (["a"-"z", "A"-"Z", "_"])(["a"-"z", "A"-"Z", "0"-"9", "_"])* >
 }
 
@@ -121,7 +123,7 @@ List<Expr_Pt_Virg> mainNT() :
     Expr_Pt_Virg e;
 }
 {
-    (( e = command() { if(e!=null) commands.add(e); } )*  <EOF>)
+    ( e = command() { if(e!=null) commands.add(e); } )*  <EOF>
     { return commands; }
 }
 
@@ -147,7 +149,8 @@ Expr_Pt_Virg command():
       ( e= affectation() <PV> {result=new Expr_Pt_Virg(e); }
       |e=importCommand() <PV> {result=new Expr_Pt_Virg(e);}
       |optionalComments()  //on ignore les tokens
-      | result=ifStatement() {return result;})
+      |result=ifStatement() {return result;}
+      |result=doWhileStatement() {return result;} )
       {return result;}
 }
 
@@ -172,7 +175,7 @@ Expr_Pt_Virg ifStatement():
         )
     )?
     {
-        return new Expr_Pt_Virg(new Condition(
+        return new Expr_Pt_Virg(new IfStatment(
             cond,
             thenCommands,
             elseCommands
@@ -181,7 +184,26 @@ Expr_Pt_Virg ifStatement():
 }
 
 
-
+Expr_Pt_Virg doWhileStatement():
+{
+    ExpressionA condition;
+    List<Expr_Pt_Virg> bodyCommands = new ArrayList<>();
+    Expr_Pt_Virg cmd;
+}
+{
+    <DO>
+    (
+        "{" (cmd=command() { bodyCommands.add(cmd); })* "}"
+      | cmd=command() { bodyCommands.add(cmd); }
+    )
+    <WHILE> "(" condition=affectation() ")" <PV>
+    {
+        return new Expr_Pt_Virg(new DoWhileLoop(
+            condition,
+            bodyCommands
+        ));
+    }
+}
 
 void optionalComments():
 {}
@@ -212,7 +234,6 @@ ExpressionA affectation():
     }
 }
 
-
 ExpressionA AndExpression():
 {ExpressionA e;
 ExpressionA res;}
@@ -220,7 +241,6 @@ ExpressionA res;}
     e=comparaison() {res=e;}(
     <And> e=comparaison() {res=new AndExpression(res,e);})* {return res;}
 }
-
 
 
 
@@ -248,6 +268,7 @@ ExpressionA res;}
 )* {return res;}
 }
 
+
 ExpressionA terme () :
 {ExpressionA res;
 ExpressionA e;}
@@ -257,7 +278,6 @@ ExpressionA e;}
 )* {return res;}
 
 }
-
 
 
 
