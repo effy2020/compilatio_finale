@@ -11,7 +11,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 import java.util.ArrayList;
-import java.io.StringReader;  
+import java.io.StringReader;
 import java.util.Scanner;
  
 
@@ -26,8 +26,10 @@ ReInit(new java.io.StringReader(input));
 
 
 public static void main(String args[]) {
+
     try {
         Scanner scanner = new Scanner(System.in);
+
         StringBuilder inputBuilder = new StringBuilder();
         System.out.println("Noter ;; pour valider l'expression :");
         while (scanner.hasNextLine()) {
@@ -75,10 +77,12 @@ public static void main(String args[]) {
 
 
 
+
+
   
 PARSER_END(Compilateur)
 
- 
+
 TOKEN : {
   < LINE_COMMENT: "//" (~["\n","\r"])* ("\n" | "\r" | "\r\n")? >
 | < BLOCK_COMMENT: "/*" (~["*"] | ("*" ~["/"]))* "*/" >
@@ -96,7 +100,7 @@ TOKEN :
     | (((["0"-"9"])+ ("." (["0"-"9"])+)? | "." (["0"-"9"])+) ("e") (["-"])? (["0"-"9"])+)
     |  ("NaN") >
 | < PV : ";" >
-| <BOOLEAN : ("True" | "False")>  
+| <BOOLEAN : ("True" | "False")>
 | <IMPORT: "import" >
 | <Equals: "==">
 | <NotEql: "!=">
@@ -106,21 +110,22 @@ TOKEN :
 | <GrStlNb : ">" >
 | <Not : "!" >
 | <And: "&&">
+| <IF:"if">
+| <ELSE:"else">
 |< IDENTIFIER: (["a"-"z", "A"-"Z", "_"])(["a"-"z", "A"-"Z", "0"-"9", "_"])* >
 }
- 
- 
+
 List<Expr_Pt_Virg> mainNT() :
 {
     List<Expr_Pt_Virg> commands = new ArrayList<>();
     Expr_Pt_Virg e;
 }
 {
-    ( e = command() { if(e!=null) commands.add(e); } )* <EOF>
+    (( e = command() { if(e!=null) commands.add(e); } )*  <EOF>)
     { return commands; }
 }
 
-  
+
 
 
 ExpressionA importCommand():
@@ -129,27 +134,60 @@ ExpressionA importCommand():
 {  <IMPORT> t=<IDENTIFIER>
 {
     return new Expression_Import(t.image);
-} } 
- 
+} }
+
+
 
 Expr_Pt_Virg command():
-{ExpressionA e;
- Expr_Pt_Virg result=null;
+{ExpressionA e,cond;
+ Expr_Pt_Virg c,result=null;
+
 }
 {
       ( e= affectation() <PV> {result=new Expr_Pt_Virg(e); }
       |e=importCommand() <PV> {result=new Expr_Pt_Virg(e);}
-      |optionalComments() )
+      |optionalComments()  //on ignore les tokens
+      | result=ifStatement() {return result;})
       {return result;}
 }
- 
+
+
+
+
+
+Expr_Pt_Virg ifStatement():
+{
+    ExpressionA cond;
+    List<Expr_Pt_Virg> thenCommands = new ArrayList<>();
+    List<Expr_Pt_Virg> elseCommands = new ArrayList<>();
+    Expr_Pt_Virg cmd;
+}
+{
+    <IF> "(" cond=affectation() ")"
+    ( "{" (cmd=command() {thenCommands.add(cmd);})* "}"
+    | cmd=command() {thenCommands.add(cmd);} )
+    (LOOKAHEAD(2) <ELSE>
+        ( "{" (cmd=command() {elseCommands.add(cmd);})* "}"
+        | cmd=command() {elseCommands.add(cmd);}
+        )
+    )?
+    {
+        return new Expr_Pt_Virg(new Condition(
+            cond,
+            thenCommands,
+            elseCommands
+        ));
+    }
+}
+
+
+
 
 void optionalComments():
 {}
 {
    <LINE_COMMENT> | <BLOCK_COMMENT>
 }
-
 
 
 
@@ -204,7 +242,7 @@ e = expression() { res = e; } (
 ExpressionA expression() :
 {ExpressionA e;
 ExpressionA res;}
-{ e=terme() {res=e;}( 
+{ e=terme() {res=e;}(
 "+" e=terme() {res=new Plus(res,e);}
 | "-" e=terme() {res=new Moins(res,e);}
 )* {return res;}
@@ -217,10 +255,10 @@ ExpressionA e;}
 "*" e=facteur() {res=new Mult(res,e);}
 |"/" e=facteur() {res=new Div(res,e);}
 )* {return res;}
- 
+
 }
- 
- 
+
+
 
 
 ExpressionA facteur () :
@@ -236,7 +274,7 @@ Token t;}
 
 
 
- 
+
 
 
 

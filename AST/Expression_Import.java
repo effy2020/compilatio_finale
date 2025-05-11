@@ -12,7 +12,7 @@ public class Expression_Import extends ExpressionA {
         this.bibliotheque = bibliotheque.replace("import ", "").trim();
     }
 
-    @Override
+
     public String toString() {
         return "import " + bibliotheque ;
     }
