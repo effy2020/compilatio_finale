@@ -315,6 +315,47 @@ public void testBlockCommentInsideExpression() {
         }
 
 
+    // tester les conditions avec if then else
+
+
+
+        @Test
+        public void testNestedIfElse() {
+            String input = "if (a == b) { if (c > d) x = 1; else x = 2; } else { x = 3; }";
+            assertDoesNotThrow(() -> new Compilateur(input).mainNT());
+        }
+
+        @Test
+        public void testIfWithComplexCondition() {
+            String input = "if (x >= 5 && y <= 10 > z != 0) result = True;  ";
+            assertDoesNotThrow(() -> new Compilateur(input).mainNT());
+        }
+
+        @Test
+        public void testIfWithArithmeticExpression() {
+            String input = "if ((a + b * 2) > (c - d / 3)) max = a;  ";
+            assertDoesNotThrow(() -> new Compilateur(input).mainNT());
+        }
+
+
+
+        @Test
+        public void testMultipleCommandsInIfBlock() {
+            String input = "if (condition) { x = 5; y = 10; z = x + y; } else { z = 0; }";
+            assertDoesNotThrow(() -> new Compilateur(input).mainNT());
+        }
+
+
+
+      
+        @Test
+        public void testIfWithImportInBlock() {
+            String input = "if (flag) { import pkg; x = 10; }  ";
+            assertDoesNotThrow(() -> new Compilateur(input).mainNT());
+        }
+
+
+
 
 
 }
