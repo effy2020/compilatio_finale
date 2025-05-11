@@ -74,6 +74,8 @@ TOKEN :
 | <And: "&&">
 | <IF:"if">
 | <ELSE:"else">
+| <DO:"do">
+| <WHILE:"while">
 |< IDENTIFIER: (["a"-"z", "A"-"Z", "_"])(["a"-"z", "A"-"Z", "0"-"9", "_"])* >
 }
 
@@ -97,12 +99,16 @@ void command():
 | importCommand() <PV>
 | optionalComments()
 | ifStatement()
+|whileStatement()
 
 }
 
 void importCommand():
 {}
 {  <IMPORT> <IDENTIFIER>    }
+
+
+
 
 void ifStatement():
 {}
@@ -112,6 +118,15 @@ void ifStatement():
     (LOOKAHEAD(2) <ELSE>
     ( "{" ( command() )* "}"  |  command() ))?
 }
+
+
+void whileStatement():
+{}
+{
+<DO>  ( "{" ( command() )* "}"  |  command()  )
+<WHILE> "("  affectation() ")" <PV>
+}
+
 
 void affectation():
 {}
