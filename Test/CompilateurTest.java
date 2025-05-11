@@ -366,6 +366,55 @@ public void testBlockCommentInsideExpression() {
 
 
 
+        //tester le do while
+
+        @Test
+        public void testSimpleDoWhile() {
+            String input = "do { x = x + 1; } while (x < 10);";
+            assertDoesNotThrow(() -> new Compilateur(input).mainNT());
+        }
+
+
+        @Test
+        public void testDoWhileWithoutBraces() {
+            String input = "do x = x + 1; while (x < 10);";
+            assertDoesNotThrow(() -> new Compilateur(input).mainNT());
+        }
+
+
+        @Test
+        public void testNestedDoWhile() {
+            String input = """
+            do { 
+                do { 
+                    y = y - 1; 
+                } while (y > 0); 
+                x = x + 1; 
+            } while (x < 5);""";
+            assertDoesNotThrow(() -> new Compilateur(input).mainNT());
+        }
+
+        @Test
+        public void testDoWhileWithComplexCondition() {
+            String input = "do { z = z * 2; } while (z < 100 && x > 0);";
+            assertDoesNotThrow(() -> new Compilateur(input).mainNT());
+        }
+
+
+        @Test
+        public void testDoWhileWithMultipleCommands() {
+            String input = """
+            do { 
+                a = a + 1; 
+                b = b - 1; 
+                c = c * 2; 
+            } while (a < b);""";
+            assertDoesNotThrow(() -> new Compilateur(input).mainNT());
+        }
+
+        
+
+
 
 
 }
